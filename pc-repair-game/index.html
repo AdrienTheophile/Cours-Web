@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Repair Shop — Simulateur de Réparation PC</title>
+    <meta name="description" content="Jeu éducatif de simulation de réparation d'ordinateurs — diagnostiquez et réparez des PC en panne !">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ============ MENU ============ -->
+    <div id="screen-menu" class="screen active">
+        <div style="max-width:560px;width:100%;margin:auto;">
+            <div class="menu-logo">🖥️🔧</div>
+            <h1 class="menu-title">PC REPAIR SHOP</h1>
+            <p class="menu-sub">Ouvrez le boîtier, diagnostiquez la panne et remplacez le bon composant. Attention à votre budget !</p>
+            <div class="menu-btns">
+                <button class="btn btn-go" id="btn-start">🚀 NOUVELLE PARTIE</button>
+                <button class="btn btn-alt" id="btn-manual">📖 MANUEL DE RÉPARATION</button>
+                <button class="btn btn-alt" id="btn-rules">📋 RÈGLES DU JEU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ GAME ============ -->
+    <div id="screen-game" class="screen">
+        <!-- HUD -->
+        <div id="hud">
+            <div class="hud-stat" id="hud-budget">💰 Budget : <span class="hud-val" id="v-budget">500€</span></div>
+            <div class="hud-stat" id="hud-score">⭐ Score : <span class="hud-val" id="v-score">0</span></div>
+            <div class="hud-stat">👤 Client : <span class="hud-val" id="v-clients">1/10</span></div>
+            <div class="hud-stat" id="hud-rep">🏆 <span class="hud-val" id="v-rep">★★★★★</span></div>
+            <div class="spacer"></div>
+            <button class="btn btn-alt btn-sm no-print" id="btn-manual2">📖 Manuel</button>
+        </div>
+
+        <!-- Game Body -->
+        <div id="game-body">
+            <!-- LEFT PANEL -->
+            <div id="left-panel">
+                <!-- Client -->
+                <div class="card" id="client-card">
+                    <div class="client-head">
+                        <div class="client-av" id="cl-avatar">👤</div>
+                        <div class="client-meta">
+                            <h2 id="cl-name">Chargement...</h2>
+                            <span class="badge badge-easy" id="cl-badge">⚡ FACILE</span>
+                        </div>
+                    </div>
+                    <div class="speech">
+                        <p id="cl-symptom">...</p>
+                    </div>
+                    <div class="wrong-pills" id="wrong-pills"></div>
+                </div>
+
+                <!-- Diagnostics -->
+                <div class="card">
+                    <div class="tools-title">🔍 OUTILS DE DIAGNOSTIC</div>
+                    <div class="tool-grid" id="tool-grid">
+                        <button class="tool-btn" data-tool="visual"><span class="tool-ico">👁️</span>Inspection visuelle</button>
+                        <button class="tool-btn" data-tool="sound"><span class="tool-ico">👂</span>Écouter les sons</button>
+                        <button class="tool-btn" data-tool="temperature"><span class="tool-ico">🌡️</span>Températures</button>
+                        <button class="tool-btn" data-tool="multimeter"><span class="tool-ico">⚡</span>Test multimètre</button>
+                        <button class="tool-btn" data-tool="bios"><span class="tool-ico">💻</span>Vérifier le BIOS</button>
+                    </div>
+                </div>
+
+                <!-- Diagnostic result -->
+                <div class="card hidden" id="diag-result">
+                    <h4>📋 Résultat :</h4>
+                    <p id="diag-text"></p>
+                </div>
+
+                <!-- History -->
+                <div class="card history-card">
+                    <h4>📜 HISTORIQUE</h4>
+                    <div id="hist-list"><p style="color:var(--text3);font-size:.75rem;font-style:italic;">Aucune réparation encore.</p></div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL — PC CASE -->
+            <div id="right-panel">
+                <div id="pc-case-wrapper">
+                    <h3>🖥️ VUE INTÉRIEURE DU PC <span style="font-size:.65rem;color:var(--text3);font-weight:400;letter-spacing:0;">— Cliquez sur un composant pour le remplacer</span></h3>
+                    <div id="pc-case">
+                        <div id="motherboard">
+                            <!-- Motherboard decorations -->
+                            <div class="mobo-chipset"></div>
+                            <div class="mobo-slots"></div>
+                            <div class="mobo-io"></div>
+                        </div>
+
+                        <!-- === COMPONENTS === -->
+
+                        <!-- PSU -->
+                        <div class="pc-comp" data-id="psu">
+                            <div class="comp-visual">
+                                <div class="psu-stripe"></div>
+                                <span class="psu-label">PSU 500W</span>
+                            </div>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">⚡ Alimentation (PSU)</div>
+                                <div class="tt-price">65€</div>
+                            </div>
+                        </div>
+
+                        <!-- CPU -->
+                        <div class="pc-comp" data-id="cpu">
+                            <div class="comp-visual">
+                                <div class="cpu-die"></div>
+                                <span style="font-size:.5rem;color:#666;margin-top:3px;">CPU</span>
+                            </div>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">🧠 Processeur (CPU)</div>
+                                <div class="tt-price">260€</div>
+                            </div>
+                        </div>
+
+                        <!-- Fan -->
+                        <div class="pc-comp" data-id="fan">
+                            <div class="fan-blades">✦</div>
+                            <div class="fan-center"></div>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">🌀 Ventilateur</div>
+                                <div class="tt-price">20€</div>
+                            </div>
+                        </div>
+
+                        <!-- RAM -->
+                        <div class="pc-comp" data-id="ram">
+                            <div class="ram-stick">
+                                <div class="ram-chips">
+                                    <div class="ram-chip"></div>
+                                    <div class="ram-chip"></div>
+                                    <div class="ram-chip"></div>
+                                    <div class="ram-chip"></div>
+                                </div>
+                                <div class="ram-notch"></div>
+                                <div class="ram-label">DDR4</div>
+                            </div>
+                            <div class="ram-stick">
+                                <div class="ram-chips">
+                                    <div class="ram-chip"></div>
+                                    <div class="ram-chip"></div>
+                                    <div class="ram-chip"></div>
+                                    <div class="ram-chip"></div>
+                                </div>
+                                <div class="ram-notch"></div>
+                                <div class="ram-label">DDR4</div>
+                            </div>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">🔲 Barrette RAM</div>
+                                <div class="tt-price">45€</div>
+                            </div>
+                        </div>
+
+                        <!-- GPU -->
+                        <div class="pc-comp" data-id="gpu">
+                            <div class="gpu-backplate"></div>
+                            <div class="gpu-fans">
+                                <div class="gpu-fan">✦</div>
+                                <div class="gpu-fan">✦</div>
+                            </div>
+                            <div class="gpu-ports">
+                                <div class="gpu-port"></div>
+                                <div class="gpu-port"></div>
+                                <div class="gpu-port"></div>
+                            </div>
+                            <span class="gpu-label">GRAPHICS</span>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">🖥️ Carte Graphique</div>
+                                <div class="tt-price">220€</div>
+                            </div>
+                        </div>
+
+                        <!-- HDD -->
+                        <div class="pc-comp" data-id="hdd">
+                            <div class="hdd-visual">
+                                <div class="hdd-platter"></div>
+                                <span class="hdd-label">HDD 1TB</span>
+                                <div class="hdd-connector">
+                                    <div class="hdd-pin"></div><div class="hdd-pin"></div>
+                                    <div class="hdd-pin"></div><div class="hdd-pin"></div>
+                                </div>
+                            </div>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">💾 Disque Dur / SSD</div>
+                                <div class="tt-price">55€</div>
+                            </div>
+                        </div>
+
+                        <!-- NIC -->
+                        <div class="pc-comp" data-id="nic">
+                            <div class="nic-visual">
+                                <div class="nic-port"><div class="nic-led"></div></div>
+                                <div class="nic-chip"></div>
+                            </div>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">📡 Carte Réseau</div>
+                                <div class="tt-price">30€</div>
+                            </div>
+                        </div>
+
+                        <!-- Thermal Paste -->
+                        <div class="pc-comp" data-id="thermal">
+                            <div class="thermal-visual">
+                                <div class="thermal-cap"></div>
+                                <div class="thermal-body">🧴</div>
+                            </div>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">🧴 Pâte Thermique</div>
+                                <div class="tt-price">8€</div>
+                            </div>
+                        </div>
+
+                        <!-- Cables -->
+                        <div class="pc-comp" data-id="cable">
+                            <div class="cable-connector">
+                                <div class="cable-pin-row">
+                                    <div class="cable-pin-small"></div><div class="cable-pin-small"></div>
+                                    <div class="cable-pin-small"></div><div class="cable-pin-small"></div>
+                                </div>
+                            </div>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">🔌 Câbles / Connectique</div>
+                                <div class="tt-price">12€</div>
+                            </div>
+                        </div>
+
+                        <!-- Motherboard (clickable overlay) -->
+                        <div class="pc-comp" data-id="mobo">
+                            <div class="mobo-visual"></div>
+                            <div class="comp-tooltip">
+                                <div class="tt-name">📟 Carte Mère</div>
+                                <div class="tt-price">160€</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selection bar (appears when component clicked) -->
+                <div id="selection-bar" class="hidden">
+                    <div class="sel-info">
+                        <div class="sel-name" id="sel-name">—</div>
+                        <div class="sel-price" id="sel-price">—</div>
+                        <div class="sel-desc" id="sel-desc">—</div>
+                    </div>
+                    <button class="btn btn-go" id="btn-repair">✅ REMPLACER</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ GAME OVER ============ -->
+    <div id="screen-gameover" class="screen">
+        <div class="go-container">
+            <div class="rank-box">
+                <div class="rank-emoji" id="r-emoji">🏆</div>
+                <div class="rank-name" id="r-name">—</div>
+                <div class="rank-desc" id="r-desc">—</div>
+            </div>
+            <h1 class="go-title" id="go-title">FIN DE JOURNÉE</h1>
+            <p class="go-sub" id="go-sub">Voici le bilan de votre journée !</p>
+            <div class="go-stats" id="go-stats"></div>
+            <div class="go-btns">
+                <button class="btn btn-go" id="btn-again">🔄 REJOUER</button>
+                <button class="btn btn-alt" id="btn-home">🏠 MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ RESULT OVERLAY ============ -->
+    <div id="result-overlay" class="hidden"></div>
+
+    <!-- ============ MODAL: MANUAL ============ -->
+    <div id="modal-manual" class="modal-bg hidden">
+        <div class="modal-box">
+            <button class="modal-x no-print" id="x-manual">✕</button>
+            <h2>📖 MANUEL DE RÉPARATION</h2>
+            <p style="text-align:center;color:var(--text3);font-size:.82rem;margin-bottom:1rem;">
+                <em>Imprimez ce manuel (<b>Ctrl+P</b>) et donnez-le au « guide » de chaque équipe.</em>
+            </p>
+            <h3>🔎 Table des symptômes</h3>
+            <table class="m-table">
+                <thead><tr><th>Symptôme</th><th>Composants à vérifier</th></tr></thead>
+                <tbody>
+                    <tr><td class="sym">Le PC ne s'allume pas du tout</td><td>Alimentation (PSU), Câbles</td></tr>
+                    <tr><td class="sym">Écran noir mais PC tourne</td><td>Carte Graphique, RAM, Câbles</td></tr>
+                    <tr><td class="sym">PC très lent / rame</td><td>Disque Dur / SSD, RAM</td></tr>
+                    <tr><td class="sym">PC s'éteint tout seul</td><td>Ventilateur, Pâte Thermique, PSU</td></tr>
+                    <tr><td class="sym">Écran bleu (BSOD)</td><td>RAM, Disque Dur, CPU</td></tr>
+                    <tr><td class="sym">Bips au démarrage</td><td>RAM, Carte Mère</td></tr>
+                    <tr><td class="sym">Pas de connexion internet</td><td>Carte Réseau</td></tr>
+                    <tr><td class="sym">Artefacts visuels</td><td>Carte Graphique</td></tr>
+                    <tr><td class="sym">Démarrage très long</td><td>Disque Dur / SSD</td></tr>
+                    <tr><td class="sym">Bruits anormaux</td><td>Ventilateur, Disque Dur</td></tr>
+                    <tr><td class="sym">Redémarrage en boucle</td><td>Alimentation, Carte Mère, RAM</td></tr>
+                    <tr><td class="sym">Surchauffe / ventilateur à fond</td><td>Ventilateur, Pâte Thermique</td></tr>
+                    <tr><td class="sym">« Système introuvable »</td><td>Disque Dur / SSD</td></tr>
+                    <tr><td class="sym">Coupure sous charge</td><td>Alimentation (PSU)</td></tr>
+                </tbody>
+            </table>
+            <h3>🧰 Composants et prix</h3>
+            <table class="m-table">
+                <thead><tr><th>Composant</th><th>Rôle</th><th>Prix</th></tr></thead>
+                <tbody>
+                    <tr><td class="sym">⚡ Alimentation (PSU)</td><td>Fournit l'énergie à tous les composants</td><td>65€</td></tr>
+                    <tr><td class="sym">🧠 Processeur (CPU)</td><td>Le cerveau — exécute les calculs</td><td>260€</td></tr>
+                    <tr><td class="sym">🔲 RAM</td><td>Mémoire vive temporaire ultra-rapide</td><td>45€</td></tr>
+                    <tr><td class="sym">💾 Disque Dur / SSD</td><td>Stockage permanent des données</td><td>55€</td></tr>
+                    <tr><td class="sym">🖥️ Carte Graphique</td><td>Gère l'affichage et les jeux</td><td>220€</td></tr>
+                    <tr><td class="sym">📟 Carte Mère</td><td>Relie tous les composants entre eux</td><td>160€</td></tr>
+                    <tr><td class="sym">🌀 Ventilateur</td><td>Refroidit le processeur</td><td>20€</td></tr>
+                    <tr><td class="sym">📡 Carte Réseau</td><td>Connexion internet (WiFi/Ethernet)</td><td>30€</td></tr>
+                    <tr><td class="sym">🧴 Pâte Thermique</td><td>Transfert thermique CPU ↔ ventirad</td><td>8€</td></tr>
+                    <tr><td class="sym">🔌 Câbles</td><td>Connectique vidéo, données, alimentation</td><td>12€</td></tr>
+                </tbody>
+            </table>
+            <h3>💡 Conseils</h3>
+            <ul>
+                <li>Utilisez les <b>outils de diagnostic</b> AVANT de remplacer un composant !</li>
+                <li>Le <b>multimètre</b> teste l'alimentation électrique.</li>
+                <li><b>Écouter les sons</b> détecte les problèmes de disque dur ou ventilateur.</li>
+                <li>Vérifier les <b>températures</b> détecte les surchauffes.</li>
+                <li>Le <b>BIOS</b> affiche les erreurs et composants manquants.</li>
+                <li>Commencez par les solutions les <b>moins chères</b> !</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============ MODAL: RULES ============ -->
+    <div id="modal-rules" class="modal-bg hidden">
+        <div class="modal-box">
+            <button class="modal-x" id="x-rules">✕</button>
+            <h2>📋 RÈGLES DU JEU</h2>
+            <h3>🎯 Objectif</h3>
+            <p>Vous tenez un atelier de réparation PC. Des clients arrivent avec des ordinateurs en panne. <b>Diagnostiquez la panne</b> et <b>cliquez sur le bon composant</b> dans le PC pour le remplacer !</p>
+            <h3>👥 Mode Équipe</h3>
+            <ul>
+                <li>Jouez à 2 : un <b>Technicien</b> (au clavier) et un <b>Guide</b> (avec le Manuel imprimé).</li>
+                <li>Le Technicien décrit les symptômes. Le Guide cherche dans le Manuel.</li>
+                <li>Ensemble, décidez quel composant remplacer dans le PC.</li>
+            </ul>
+            <h3>💰 Budget</h3>
+            <ul>
+                <li>Vous démarrez avec <b>500€</b>.</li>
+                <li>Chaque composant a un coût (câble = 12€, CPU = 260€).</li>
+                <li><b>Bon composant</b> → points + argent gagné 🎉</li>
+                <li><b>Mauvais composant</b> → argent perdu, le PC ne marche toujours pas 😬</li>
+                <li>Budget à <b>0€</b> → game over !</li>
+            </ul>
+            <h3>⭐ Score</h3>
+            <ul>
+                <li><b>+100 pts</b> réparation correcte du 1er coup</li>
+                <li><b>+50 pts</b> correcte au 2e essai</li>
+                <li><b>-20 pts</b> par mauvais composant</li>
+                <li>Bonus selon la difficulté !</li>
+            </ul>
+            <h3>🏆 Rangs</h3>
+            <ul>
+                <li>🔰 Stagiaire — &lt;200 pts</li>
+                <li>🔧 Technicien Junior — 200-499</li>
+                <li>⚙️ Technicien Confirmé — 500-799</li>
+                <li>🛠️ Expert — 800-999</li>
+                <li>🏆 Maître Technicien — ≥1000</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Confetti container -->
+    <div class="confetti-box" id="confetti-box"></div>
+
+    <script src="game.js"></script>
+</body>
+</html>

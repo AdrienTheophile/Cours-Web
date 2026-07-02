@@ -1,0 +1,771 @@
+/* ==========================================
+   PC REPAIR SHOP — Visual Edition
+   Dark tech theme with interactive PC case
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* === Variables === */
+:root {
+    --bg-dark: #080c14;
+    --bg-panel: #0f1520;
+    --bg-card: rgba(15, 21, 32, 0.92);
+    --bg-glass: rgba(15, 23, 42, 0.65);
+    --green: #22c55e;
+    --cyan: #06b6d4;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --purple: #a855f7;
+    --pink: #ec4899;
+    --text: #f1f5f9;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --border: rgba(148,163,184,0.1);
+    --font-d: 'Orbitron', sans-serif;
+    --font-b: 'Inter', sans-serif;
+    --font-m: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; }
+body {
+    font-family: var(--font-b);
+    background: var(--bg-dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+body::before {
+    content:'';
+    position:fixed; inset:0;
+    background:
+        radial-gradient(ellipse at 15% 50%, rgba(34,197,94,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse at 85% 30%, rgba(6,182,212,0.05) 0%, transparent 60%);
+    pointer-events:none; z-index:0;
+}
+
+/* === Screens === */
+.screen { display:none; position:relative; z-index:1; min-height:100vh; }
+.screen.active { display:flex; flex-direction:column; animation: fadeIn .5s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+/* === MENU === */
+#screen-menu { align-items:center; justify-content:center; text-align:center; padding:2rem; }
+.menu-logo { font-size:5rem; margin-bottom:.8rem; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.menu-title {
+    font-family:var(--font-d); font-size:3rem; font-weight:900;
+    background:linear-gradient(135deg,var(--green),var(--cyan));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text; letter-spacing:3px; margin-bottom:.4rem;
+}
+.menu-sub { color:var(--text2); font-size:1.05rem; margin-bottom:2.5rem; max-width:500px; }
+.menu-btns { display:flex; flex-direction:column; gap:.8rem; width:100%; max-width:340px; margin:0 auto; align-items:center; }
+.menu-btns .btn { width:100%; }
+
+/* === Buttons === */
+.btn {
+    font-family:var(--font-d); font-weight:700; font-size:.9rem;
+    padding:.9rem 2rem; border:none; border-radius:12px; cursor:pointer;
+    transition:all .25s ease; letter-spacing:1px; position:relative;
+}
+.btn:active { transform:scale(.96)!important; }
+.btn-go {
+    background:linear-gradient(135deg,var(--green),#16a34a); color:#fff;
+    box-shadow:0 0 20px rgba(34,197,94,.3);
+}
+.btn-go:hover { transform:translateY(-2px); box-shadow:0 0 30px rgba(34,197,94,.5); }
+.btn-alt {
+    background:var(--bg-glass); color:var(--text); border:1px solid rgba(34,197,94,.2);
+    backdrop-filter:blur(8px);
+}
+.btn-alt:hover { border-color:var(--green); background:rgba(34,197,94,.08); }
+.btn-sm { font-size:.72rem; padding:.5rem 1rem; }
+.btn-warn { background:linear-gradient(135deg,var(--amber),#d97706); color:#fff; }
+.btn-red { background:linear-gradient(135deg,var(--red),#dc2626); color:#fff; }
+
+/* === HUD === */
+#hud {
+    display:flex; align-items:center; gap:.6rem; padding:.6rem 1.2rem;
+    background:rgba(8,12,20,.95); border-bottom:1px solid var(--border);
+    backdrop-filter:blur(16px); position:sticky; top:0; z-index:100; flex-wrap:wrap;
+}
+.hud-stat {
+    display:flex; align-items:center; gap:.4rem;
+    font-family:var(--font-m); font-size:.8rem;
+    padding:.35rem .8rem; background:var(--bg-glass);
+    border-radius:8px; border:1px solid var(--border);
+}
+.hud-val { font-weight:700; color:var(--green); }
+#hud-budget .hud-val { color:var(--amber); }
+#hud-rep .hud-val { color:var(--purple); }
+.hud-val.danger { color:var(--red); animation:blink 1s infinite; }
+@keyframes blink { 50%{opacity:.4} }
+#hud .spacer { flex:1; }
+
+/* === GAME LAYOUT === */
+#game-body {
+    display:grid; grid-template-columns:320px 1fr;
+    gap:1.2rem; padding:1.2rem; flex:1;
+    max-width:1400px; margin:0 auto; width:100%;
+}
+
+/* === LEFT PANEL === */
+#left-panel { display:flex; flex-direction:column; gap:1rem; }
+
+.card {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:14px; padding:1.2rem; backdrop-filter:blur(12px);
+}
+
+/* Client Card */
+.client-head { display:flex; align-items:center; gap:.8rem; margin-bottom:.8rem; }
+.client-av {
+    width:48px; height:48px; border-radius:50%;
+    background:linear-gradient(135deg,var(--cyan),var(--purple));
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.6rem; flex-shrink:0;
+    box-shadow:0 0 12px rgba(6,182,212,.3);
+}
+.client-meta h2 { font-family:var(--font-d); font-size:.95rem; }
+.badge {
+    display:inline-block; font-size:.6rem; padding:.1rem .5rem;
+    border-radius:20px; font-family:var(--font-m); font-weight:600; margin-top:.15rem;
+}
+.badge-easy { background:rgba(34,197,94,.12); color:var(--green); border:1px solid rgba(34,197,94,.25); }
+.badge-med  { background:rgba(245,158,11,.12); color:var(--amber); border:1px solid rgba(245,158,11,.25); }
+.badge-hard { background:rgba(239,68,68,.12); color:var(--red); border:1px solid rgba(239,68,68,.25); }
+
+.speech {
+    background:rgba(0,0,0,.35); border-radius:10px; padding:.8rem 1rem;
+    border-left:3px solid var(--cyan); position:relative;
+}
+.speech::before { content:'💬'; position:absolute; top:-10px; left:10px; font-size:1rem; }
+.speech p { color:var(--text2); font-size:.88rem; font-style:italic; line-height:1.55; }
+
+/* Diagnostic Tools */
+.tools-title { font-family:var(--font-d); font-size:.78rem; color:var(--cyan); margin-bottom:.6rem; letter-spacing:1px; }
+.tool-grid { display:flex; flex-direction:column; gap:.4rem; }
+.tool-btn {
+    font-family:var(--font-b); font-size:.78rem; font-weight:500;
+    padding:.55rem .7rem; background:rgba(6,182,212,.06);
+    border:1px solid rgba(6,182,212,.15); border-radius:8px;
+    color:var(--text); cursor:pointer; transition:all .2s;
+    text-align:left; display:flex; align-items:center; gap:.5rem;
+}
+.tool-btn:hover { background:rgba(6,182,212,.12); border-color:var(--cyan); }
+.tool-btn.used { opacity:.5; cursor:default; }
+.tool-btn.used::after { content:' ✓'; color:var(--green); }
+.tool-ico { font-size:1.1rem; flex-shrink:0; }
+
+/* Diagnostic Result */
+#diag-result {
+    background:rgba(6,182,212,.07); border:1px solid rgba(6,182,212,.2);
+    border-radius:10px; padding:.8rem 1rem; animation:slideUp .3s ease;
+}
+#diag-result h4 {
+    font-family:var(--font-m); font-size:.68rem; color:var(--cyan);
+    text-transform:uppercase; letter-spacing:1px; margin-bottom:.3rem;
+}
+#diag-result p { font-size:.85rem; color:var(--text2); line-height:1.5; }
+@keyframes slideUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* Wrong attempts pills */
+.wrong-pills { display:flex; flex-wrap:wrap; gap:.3rem; margin-top:.6rem; }
+.wrong-pill {
+    font-size:.65rem; padding:.15rem .5rem; border-radius:20px;
+    font-family:var(--font-m); background:rgba(239,68,68,.1);
+    border:1px solid rgba(239,68,68,.2); color:var(--red);
+}
+
+/* === RIGHT PANEL — PC CASE === */
+#right-panel { display:flex; flex-direction:column; gap:1rem; }
+
+/* The PC Case */
+#pc-case-wrapper {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:16px; padding:1.2rem; position:relative; flex:1;
+}
+#pc-case-wrapper h3 {
+    font-family:var(--font-d); font-size:.82rem; color:var(--green);
+    margin-bottom:1rem; letter-spacing:1px;
+}
+
+#pc-case {
+    position:relative; width:100%; aspect-ratio:16/10;
+    border-radius:12px; overflow:hidden;
+    /* Case exterior */
+    background: linear-gradient(180deg, #1a1f2e 0%, #141824 100%);
+    border:3px solid #2a3040;
+    box-shadow: inset 0 0 60px rgba(0,0,0,.5), 0 8px 32px rgba(0,0,0,.4);
+    min-height: 380px;
+}
+
+/* Case screws */
+#pc-case::before, #pc-case::after {
+    content:''; position:absolute; width:10px; height:10px;
+    border-radius:50%; background:radial-gradient(circle,#555,#333);
+    border:1px solid #444; z-index:5;
+}
+#pc-case::before { top:8px; right:8px; }
+#pc-case::after { bottom:8px; right:8px; }
+
+/* Motherboard area */
+#motherboard {
+    position:absolute;
+    top:8%; left:5%; right:5%; bottom:8%;
+    background:
+        linear-gradient(135deg, #1a3a2a 0%, #162e22 50%, #1a3828 100%);
+    border:2px solid #2a5a3a;
+    border-radius:6px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,.3);
+    z-index:0;
+}
+
+/* PCB traces */
+#motherboard::before {
+    content:''; position:absolute; inset:0;
+    background-image:
+        linear-gradient(0deg, rgba(34,197,94,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,197,94,.04) 1px, transparent 1px),
+        linear-gradient(45deg, rgba(34,197,94,.02) 1px, transparent 1px);
+    background-size: 20px 20px, 20px 20px, 28px 28px;
+    border-radius:6px; pointer-events:none;
+}
+
+/* Small PCB traces decoration */
+#motherboard::after {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    background-image:
+        radial-gradient(circle at 15% 25%, rgba(34,197,94,.06) 1px, transparent 1px),
+        radial-gradient(circle at 75% 60%, rgba(34,197,94,.06) 1px, transparent 1px),
+        radial-gradient(circle at 45% 80%, rgba(34,197,94,.06) 1px, transparent 1px),
+        radial-gradient(circle at 85% 15%, rgba(34,197,94,.06) 1px, transparent 1px);
+    background-size: 8px 8px, 12px 12px, 10px 10px, 6px 6px;
+    pointer-events:none;
+}
+
+/* === COMPONENTS INSIDE PC === */
+.pc-comp {
+    position:absolute; cursor:pointer;
+    transition: all .25s ease;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    z-index:5;
+    border-radius:6px;
+}
+.pc-comp:hover {
+    z-index:15;
+    filter: brightness(1.3);
+}
+.pc-comp:hover .comp-tooltip { opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+.pc-comp.selected {
+    box-shadow: 0 0 0 2px var(--green), 0 0 20px rgba(34,197,94,.4);
+    z-index:15;
+}
+.pc-comp.wrong {
+    box-shadow: 0 0 0 2px var(--red), 0 0 15px rgba(239,68,68,.3);
+}
+.pc-comp.correct {
+    box-shadow: 0 0 0 2px var(--green), 0 0 25px rgba(34,197,94,.5);
+    animation: correctPulse 1.5s ease-in-out infinite;
+}
+@keyframes correctPulse {
+    0%,100% { box-shadow:0 0 0 2px var(--green),0 0 15px rgba(34,197,94,.3); }
+    50% { box-shadow:0 0 0 3px var(--green),0 0 30px rgba(34,197,94,.6); }
+}
+.pc-comp.disabled { opacity:.35; cursor:not-allowed; pointer-events:none; }
+
+/* Component tooltip */
+.comp-tooltip {
+    position:absolute; bottom:calc(100% + 8px); left:50%;
+    transform:translateX(-50%) translateY(5px);
+    background:rgba(10,14,23,.95); border:1px solid var(--border);
+    border-radius:8px; padding:.4rem .7rem;
+    white-space:nowrap; pointer-events:none; opacity:0;
+    transition:all .2s ease; z-index:50;
+    backdrop-filter:blur(10px);
+    font-size:.75rem;
+}
+.comp-tooltip .tt-name { font-weight:600; color:var(--text); }
+.comp-tooltip .tt-price { color:var(--amber); font-family:var(--font-m); font-size:.7rem; }
+
+/* === Individual Component Styles === */
+
+/* PSU - Bottom left */
+.pc-comp[data-id="psu"] {
+    bottom:5%; left:3%; width:28%; height:22%;
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+    border:2px solid #444;
+    border-radius:4px;
+}
+.pc-comp[data-id="psu"] .comp-visual {
+    width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    position:relative;
+}
+.pc-comp[data-id="psu"] .comp-visual::before {
+    content:''; position:absolute; left:8%; top:15%; width:35%; height:70%;
+    border:2px solid #555; border-radius:50%;
+    background:repeating-conic-gradient(#333 0deg 30deg, #2a2a2a 30deg 60deg);
+}
+.pc-comp[data-id="psu"] .comp-visual::after {
+    content:'⚡'; position:absolute; right:12%; font-size:1.5rem;
+}
+.psu-label {
+    position:absolute; bottom:3px; right:6px;
+    font-family:var(--font-m); font-size:.55rem; color:#666;
+    letter-spacing:1px;
+}
+.psu-stripe {
+    position:absolute; top:0; left:0; right:0; height:4px;
+    background:repeating-linear-gradient(90deg, var(--amber) 0px, var(--amber) 8px, #222 8px, #222 16px);
+}
+
+/* CPU - Upper center */
+.pc-comp[data-id="cpu"] {
+    top:8%; left:35%; width:16%; height:24%;
+    background:linear-gradient(145deg, #c0c0c0, #8a8a8a);
+    border:2px solid #999;
+    border-radius:3px;
+    box-shadow:inset 0 0 10px rgba(0,0,0,.3);
+}
+.pc-comp[data-id="cpu"] .comp-visual {
+    width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    font-size:.6rem; font-family:var(--font-m); color:#444; font-weight:700;
+    flex-direction:column; gap:2px;
+}
+.cpu-die {
+    width:40%; height:35%; background:linear-gradient(135deg,#4a6a5a,#3a5a4a);
+    border:1px solid #5a7a6a; border-radius:2px;
+}
+/* CPU pin dots */
+.pc-comp[data-id="cpu"]::after {
+    content:''; position:absolute; inset:4px;
+    background-image:radial-gradient(circle, #aaa 1px, transparent 1px);
+    background-size:6px 6px; opacity:.15;
+}
+
+/* Fan/Cooler - On top of CPU area */
+.pc-comp[data-id="fan"] {
+    top:5%; left:54%; width:13%; height:20%;
+    background:linear-gradient(135deg, #2d2d2d, #1d1d1d);
+    border:2px solid #555;
+    border-radius:50%;
+    overflow:hidden;
+}
+.fan-blades {
+    width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    animation: spin 3s linear infinite;
+    font-size:2rem; color:#666;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+.fan-center {
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:20%; height:20%; background:radial-gradient(circle,#666,#444);
+    border-radius:50%; z-index:2; border:1px solid #777;
+}
+
+/* RAM - Right side, vertical sticks — BRIGHT green PCB */
+.pc-comp[data-id="ram"] {
+    top:5%; right:6%; width:14%; height:46%;
+    background:transparent;
+    display:flex; gap:8px; border-radius:3px; border:none;
+    flex-direction:row;
+    z-index:8;
+}
+.ram-stick {
+    flex:1; position:relative; min-width:0;
+    background:linear-gradient(180deg, #2d8a4e, #24753f, #2d8a4e);
+    border:2px solid #3cb371;
+    border-radius:3px;
+    overflow:hidden;
+    box-shadow:
+        0 0 10px rgba(60,179,113,.3),
+        inset 0 0 10px rgba(0,0,0,.25);
+}
+/* Heatsink fin texture */
+.ram-stick::before {
+    content:''; position:absolute; inset:0;
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,.07) 0px,
+            rgba(255,255,255,.07) 1px,
+            transparent 1px,
+            transparent 6px
+        );
+    z-index:1;
+}
+/* Top accent strip (RGB glow) */
+.ram-stick::after {
+    content:''; position:absolute;
+    top:0; left:0; right:0; height:6px;
+    background:linear-gradient(90deg, #06b6d4, #a855f7, #ec4899, #06b6d4);
+    background-size:200% 100%;
+    animation:ramRGB 3s linear infinite;
+    border-radius:2px 2px 0 0;
+    box-shadow:0 0 12px rgba(6,182,212,.5);
+    z-index:2;
+}
+@keyframes ramRGB {
+    0%{background-position:0% 50%}
+    100%{background-position:200% 50%}
+}
+/* DRAM chip modules */
+.ram-chips {
+    position:absolute; top:18%; left:12%; right:12%; bottom:18%;
+    display:flex; flex-direction:column; gap:4px;
+    justify-content:center;
+    z-index:1;
+}
+.ram-chip {
+    width:100%; height:14%; min-height:5px;
+    background:linear-gradient(135deg, #1a1a1a, #252525);
+    border:1px solid #444;
+    border-radius:1px;
+    box-shadow:0 1px 2px rgba(0,0,0,.4);
+}
+/* Bottom gold contact pins */
+.ram-notch {
+    position:absolute; bottom:0; left:8%; right:8%; height:14%;
+    background:linear-gradient(180deg, #c9a84c, #b8942f);
+    border-radius:0 0 2px 2px;
+    z-index:1;
+}
+.ram-notch::before {
+    content:''; position:absolute; inset:3px 2px;
+    background-image:
+        repeating-linear-gradient(90deg,
+            #a07828 0px, #a07828 2px, #c9a84c 2px, #c9a84c 4px
+        );
+    border-radius:1px;
+}
+/* Label */
+.ram-label {
+    position:absolute; bottom:16%; left:0; right:0;
+    text-align:center;
+    font-family:var(--font-m); font-size:.4rem; color:rgba(255,255,255,.5);
+    letter-spacing:1px;
+    z-index:2;
+}
+
+/* GPU - Large horizontal card in middle */
+.pc-comp[data-id="gpu"] {
+    top:40%; left:3%; width:65%; height:20%;
+    background:linear-gradient(180deg, #222, #1a1a1a);
+    border:2px solid #444;
+    border-radius:5px;
+    flex-direction:row;
+}
+.gpu-fans {
+    display:flex; gap:4px; align-items:center; padding:0 8%;
+    width:100%; height:100%;
+}
+.gpu-fan {
+    width:30%; aspect-ratio:1; border:1.5px solid #555;
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:1.2rem; animation:spin 2.5s linear infinite; color:#555;
+}
+.gpu-fan:nth-child(2) { animation-direction:reverse; }
+.gpu-ports {
+    position:absolute; right:4px; top:15%; bottom:15%;
+    width:12px; display:flex; flex-direction:column; gap:3px; justify-content:center;
+}
+.gpu-port {
+    width:10px; height:6px; background:#444; border-radius:1px; border:1px solid #555;
+}
+.gpu-label {
+    position:absolute; bottom:4px; left:10px;
+    font-family:var(--font-m); font-size:.5rem; color:#555; letter-spacing:2px;
+}
+.gpu-backplate {
+    position:absolute; top:-3px; left:5%; right:5%; height:3px;
+    background:linear-gradient(90deg,#333,#444,#333); border-radius:2px 2px 0 0;
+}
+
+/* HDD - Bottom center */
+.pc-comp[data-id="hdd"] {
+    bottom:5%; left:35%; width:20%; height:16%;
+    background:linear-gradient(135deg,#c8c8c8,#a0a0a0);
+    border:2px solid #bbb;
+    border-radius:3px;
+    box-shadow:inset 0 0 8px rgba(0,0,0,.15);
+}
+.hdd-visual {
+    width:100%; height:100%; position:relative; display:flex;
+    align-items:center; justify-content:center;
+}
+.hdd-platter {
+    width:50%; aspect-ratio:1; border:2px solid #999;
+    border-radius:50%; background:linear-gradient(135deg,#e0e0e0,#b0b0b0);
+    position:relative;
+}
+.hdd-platter::after {
+    content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:20%; height:20%; background:#888; border-radius:50%;
+    border:1px solid #999;
+}
+.hdd-label {
+    position:absolute; top:4px; right:6px;
+    font-family:var(--font-m); font-size:.45rem; color:#777; letter-spacing:1px;
+}
+.hdd-connector {
+    position:absolute; bottom:3px; left:8px;
+    display:flex; gap:2px;
+}
+.hdd-pin { width:3px; height:6px; background:#888; border-radius:1px; }
+
+/* NIC - Below GPU right */
+.pc-comp[data-id="nic"] {
+    bottom:5%; right:8%; width:16%; height:14%;
+    background:linear-gradient(135deg,#1a3a5a,#142a4a);
+    border:1.5px solid #2a5a8a;
+    border-radius:3px;
+}
+.nic-visual {
+    width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    position:relative;
+}
+.nic-port {
+    width:35%; height:50%; background:#222;
+    border:1.5px solid #555; border-radius:2px;
+    position:relative;
+}
+.nic-led {
+    position:absolute; bottom:3px; right:3px;
+    width:4px; height:4px; background:var(--red);
+    border-radius:50%; box-shadow:0 0 4px var(--red);
+}
+.nic-chip {
+    position:absolute; top:15%; right:10%;
+    width:20%; height:30%; background:#111;
+    border:1px solid #2a5a8a; border-radius:1px;
+}
+
+/* Thermal Paste - Near CPU */
+.pc-comp[data-id="thermal"] {
+    top:34%; left:38%; width:10%; height:12%;
+    background:linear-gradient(135deg,#e8e8e8,#ccc);
+    border:1.5px solid #bbb;
+    border-radius:10px 10px 4px 4px;
+}
+.thermal-visual {
+    width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    position:relative;
+}
+.thermal-cap {
+    position:absolute; top:-2px; left:25%; right:25%; height:20%;
+    background:var(--cyan); border-radius:3px 3px 0 0;
+}
+.thermal-body { font-size:.8rem; margin-top:10%; }
+
+/* Cables - Bottom right area */
+.pc-comp[data-id="cable"] {
+    bottom:5%; left:58%; width:12%; height:14%;
+    background:transparent;
+    border:none;
+    display:flex; flex-wrap:wrap; gap:2px;
+    align-items:center; justify-content:center;
+    border-radius:4px;
+}
+.cable-wire {
+    width:4px; border-radius:2px;
+}
+.cable-connector {
+    width:80%; height:35%; background:#222;
+    border:1.5px solid #555; border-radius:3px;
+    display:flex; align-items:center; justify-content:center; gap:2px;
+}
+.cable-pin-row { display:flex; gap:1px; }
+.cable-pin-small { width:3px; height:3px; background:#888; border-radius:.5px; }
+
+/* Motherboard - clickable background overlay, BELOW all other components */
+.pc-comp[data-id="mobo"] {
+    top:2%; left:2%; right:2%; bottom:2%;
+    border:2px dashed rgba(34,197,94,.15);
+    background:transparent;
+    border-radius:6px;
+    z-index:1;
+    pointer-events:all;
+}
+.mobo-visual {
+    width:100%; height:100%; position:relative;
+}
+.mobo-chipset {
+    position:absolute; bottom:30%; right:25%;
+    width:14%; height:12%; background:#222;
+    border:1px solid #444; border-radius:2px;
+}
+.mobo-slots {
+    position:absolute; left:3%; top:65%; width:70%; height:3px;
+    background:linear-gradient(90deg, #444, #555, #444);
+    border-radius:2px;
+    box-shadow: 0 8px 0 #444, 0 16px 0 #444;
+}
+.mobo-io {
+    position:absolute; top:3%; left:2%;
+    width:8%; height:30%;
+    background:#333; border:1px solid #555; border-radius:2px;
+}
+
+/* === Selected component info bar === */
+#selection-bar {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:12px; padding:.8rem 1.2rem;
+    display:flex; align-items:center; gap:1rem;
+    animation:slideUp .3s ease;
+}
+#selection-bar .sel-info {
+    flex:1;
+}
+#selection-bar .sel-name {
+    font-family:var(--font-d); font-size:.85rem; color:var(--text);
+}
+#selection-bar .sel-price {
+    font-family:var(--font-m); font-size:.8rem; color:var(--amber);
+}
+#selection-bar .sel-desc {
+    font-size:.75rem; color:var(--text3); margin-top:.1rem;
+}
+
+/* === History === */
+.history-card { max-height:180px; overflow-y:auto; }
+.history-card h4 { font-family:var(--font-d); font-size:.7rem; color:var(--text3); letter-spacing:1px; margin-bottom:.4rem; }
+.hist-entry {
+    display:flex; align-items:center; gap:.4rem; padding:.3rem 0;
+    border-bottom:1px solid rgba(255,255,255,.03); font-size:.75rem; color:var(--text2);
+}
+.hist-entry:last-child { border-bottom:none; }
+.hist-pts { margin-left:auto; font-family:var(--font-m); }
+
+/* === RESULT OVERLAY === */
+#result-overlay {
+    position:fixed; inset:0; background:rgba(0,0,0,.82);
+    backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center;
+    z-index:200; animation:fadeIn .3s ease;
+}
+.result-card {
+    background:var(--bg-panel); border-radius:20px; padding:2.5rem;
+    max-width:460px; width:90%; text-align:center;
+    border:1px solid var(--border);
+    animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn { from{opacity:0;transform:scale(.8)} to{opacity:1;transform:scale(1)} }
+.result-icon { font-size:3.5rem; margin-bottom:.8rem; }
+.result-title { font-family:var(--font-d); font-size:1.4rem; font-weight:900; margin-bottom:.4rem; }
+.result-title.ok { color:var(--green); }
+.result-title.ko { color:var(--red); }
+.result-msg { color:var(--text2); margin-bottom:1.5rem; font-size:.9rem; line-height:1.6; }
+.result-stats { display:flex; justify-content:center; gap:2rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+.r-stat .r-label { font-size:.65rem; color:var(--text3); text-transform:uppercase; font-family:var(--font-m); letter-spacing:1px; }
+.r-stat .r-val { font-family:var(--font-d); font-size:1.3rem; font-weight:700; }
+.r-val.plus { color:var(--green); }
+.r-val.minus { color:var(--red); }
+
+/* === MODAL === */
+.modal-bg {
+    position:fixed; inset:0; background:rgba(0,0,0,.8); backdrop-filter:blur(5px);
+    display:flex; align-items:center; justify-content:center;
+    z-index:300; animation:fadeIn .25s; padding:1rem;
+}
+.modal-box {
+    background:var(--bg-panel); border:1px solid var(--border);
+    border-radius:20px; max-width:780px; width:100%;
+    max-height:85vh; overflow-y:auto; padding:2rem;
+}
+.modal-box h2 { font-family:var(--font-d); font-size:1.3rem; color:var(--green); margin-bottom:1.2rem; text-align:center; letter-spacing:1px; }
+.modal-box h3 { font-family:var(--font-d); font-size:.9rem; color:var(--cyan); margin:1.4rem 0 .6rem; }
+.modal-box p,.modal-box li { color:var(--text2); font-size:.88rem; line-height:1.65; }
+.modal-box ul { list-style:none; padding:0; }
+.modal-box ul li::before { content:'▸ '; color:var(--green); font-weight:bold; }
+.modal-x {
+    float:right; background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.25);
+    color:var(--red); width:32px; height:32px; border-radius:50%;
+    font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:all .2s; position:sticky; top:0; z-index:5;
+}
+.modal-x:hover { background:var(--red); color:#fff; }
+
+/* Manual table */
+.m-table { width:100%; border-collapse:collapse; margin:.8rem 0; font-size:.82rem; }
+.m-table th {
+    background:rgba(34,197,94,.08); color:var(--green);
+    font-family:var(--font-m); font-size:.7rem; text-transform:uppercase;
+    letter-spacing:1px; padding:.65rem; text-align:left;
+    border-bottom:2px solid rgba(34,197,94,.2);
+}
+.m-table td { padding:.55rem .65rem; border-bottom:1px solid var(--border); color:var(--text2); }
+.m-table tr:hover td { background:rgba(34,197,94,.04); }
+.m-table .sym { font-weight:500; color:var(--text); }
+
+/* === GAME OVER === */
+#screen-gameover { align-items:center; justify-content:center; padding:2rem; text-align:center; }
+.go-container { max-width:560px; width:100%; }
+.rank-box {
+    margin-bottom:1.5rem; padding:1.5rem;
+    background:var(--bg-glass); border-radius:16px;
+    border:1px solid rgba(34,197,94,.2);
+}
+.rank-emoji { font-size:3.5rem; margin-bottom:.4rem; }
+.rank-name { font-family:var(--font-d); font-size:1.2rem; font-weight:700; color:var(--amber); }
+.rank-desc { color:var(--text2); font-size:.88rem; margin-top:.2rem; }
+.go-title { font-family:var(--font-d); font-size:2rem; font-weight:900; margin-bottom:.3rem; }
+.go-sub { color:var(--text2); font-size:1rem; margin-bottom:1.5rem; }
+.go-stats {
+    display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-bottom:1.5rem;
+}
+.go-stat {
+    background:var(--bg-glass); border:1px solid var(--border);
+    border-radius:12px; padding:1rem; backdrop-filter:blur(8px);
+}
+.go-stat .gs-icon { font-size:1.8rem; margin-bottom:.3rem; }
+.go-stat .gs-label { font-size:.65rem; color:var(--text3); text-transform:uppercase; font-family:var(--font-m); letter-spacing:1px; }
+.go-stat .gs-val { font-family:var(--font-d); font-size:1.4rem; font-weight:700; color:var(--green); margin-top:.2rem; }
+.go-btns { display:flex; flex-direction:column; gap:.6rem; align-items:center; }
+.go-btns .btn { width:100%; max-width:320px; }
+
+/* Confetti */
+.confetti-box { position:fixed; inset:0; pointer-events:none; z-index:50; overflow:hidden; }
+.confetti-p {
+    position:absolute; top:-12px;
+    animation: cfall linear forwards;
+}
+@keyframes cfall {
+    0% { transform:translateY(0) rotate(0deg); opacity:1; }
+    100% { transform:translateY(100vh) rotate(720deg); opacity:0; }
+}
+
+/* Hidden */
+.hidden { display:none!important; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(148,163,184,.15); border-radius:3px; }
+
+/* Print */
+@media print {
+    body { background:#fff!important; color:#000!important; }
+    body::before { display:none!important; }
+    .screen,.modal-bg { display:none!important; }
+    .modal-bg.print-target { display:flex!important; position:static!important; background:none!important; }
+    .modal-box { background:#fff!important; color:#000!important; border:none!important; max-height:none!important; }
+    .modal-x,.no-print { display:none!important; }
+    .modal-box h2,.modal-box h3 { color:#000!important; }
+    .modal-box p,.modal-box li,.m-table td { color:#333!important; }
+    .m-table th { background:#eee!important; color:#000!important; }
+}
+
+/* Responsive */
+@media(max-width:900px) {
+    #game-body { grid-template-columns:1fr; }
+    #pc-case { min-height:300px; }
+    .menu-title { font-size:2rem; }
+}
+@media(max-width:600px) {
+    .menu-title { font-size:1.4rem; }
+    .menu-logo { font-size:3rem; }
+    #pc-case { min-height:250px; }
+    .go-stats { grid-template-columns:1fr; }
+}

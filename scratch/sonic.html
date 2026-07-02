@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="style_scratch.css" />
 </head>
+
 <body>
 
   <header>
@@ -23,63 +25,126 @@
     <section>
       <h2>🎮 Joue au jeu Sonic</h2>
       <p>Clique sur le drapeau vert pour démarrer :</p>
-      <iframe
-        src="https://scratch.mit.edu/projects/1191928226/embed"
-        allowtransparency="true"
-        width="485"
-        height="402"
-        frameborder="0"
-        scrolling="no"
-        allowfullscreen>
+      <iframe src="https://scratch.mit.edu/projects/1350923886/embed" allowtransparency="true" width="485" height="402"
+        frameborder="0" scrolling="no" allowfullscreen>
       </iframe>
     </section>
 
     <section>
       <h2>🎓 Crée ton propre Sonic</h2>
-      <p>Choisis une partie du tutoriel à regarder :</p>
+      <p>Choisis une partie pour voir le code pas à pas :</p>
 
-      <div class="video-buttons">
-        <button onclick="changerVideo(1)">Partie 1</button>
-        <button onclick="changerVideo(2)">Partie 2</button>
-        <button onclick="changerVideo(3)">Partie 3</button>
-        <button onclick="changerVideo(4)">Partie 4</button>
+      <div class="part-buttons">
+        <button onclick="changerPartie(1)" id="btn-part-1">Partie 1 (Sonic)</button>
+        <button onclick="changerPartie(2)" id="btn-part-2">Partie 2 (Level)</button>
+        <button onclick="changerPartie(3)" id="btn-part-3">Partie 3 (Ring)</button>
+        <button onclick="changerPartie(4)" id="btn-part-4">Partie 4 (Crabe)</button>
       </div>
 
-      <div class="video-container">
-        <iframe
-          id="video"
-          src="https://www.youtube.com/embed/JUGvWKkou80"
-          allowfullscreen>
+      <div class="screenshot-container" style="position: relative;">
+        <button class="btn-fullscreen" onclick="openFullscreen()">🔍 Agrandir</button>
+        <img id="screenshot-display" src="projets/Sonic/sonic-screen/sonic/1.png" alt="Capture d'écran Scratch"
+          style="cursor: zoom-in;" onclick="openFullscreen()" />
+
+        <div class="screenshot-controls">
+          <button onclick="changerCapture(-1)" class="btn-nav" id="btn-prev">⬅ Précédent</button>
+          <span id="screenshot-counter">1 / 5</span>
+          <button onclick="changerCapture(1)" class="btn-nav" id="btn-next">Suivant ➡</button>
+        </div>
+      </div>
+
+      <div class="version-container">
+        <h3>�️ Version complète de cette partie</h3>
+        <iframe id="version-iframe" src="https://scratch.mit.edu/projects/1350922870/embed" allowtransparency="true"
+          width="485" height="402" frameborder="0" scrolling="no" allowfullscreen>
         </iframe>
       </div>
 
-      <p>
+      <p style="margin-top: 30px;">
         <a href="https://scratch.mit.edu/projects/490408819/editor/" target="_blank">
-          <button class="btn-green">Lancer l’éditeur Scratch</button>
+          <button class="btn-green">Lancer l’éditeur Scratch en ligne</button>
         </a>
       </p>
     </section>
   </main>
 
-<script>
-  function changerVideo(partie) {
-    const videos = {
-      1: "JUGvWKkou80",
-      2: "oa6EOskURQs",
-      3: "tqwpuEpCPnw",
-      4: "cYjHwj3872I"
+  <!-- Modale pour activer le plein écran de l'image -->
+  <div id="image-modal" class="modal" onclick="closeFullscreen()">
+    <span class="close" onclick="closeFullscreen()">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <script>
+    const parties = {
+      1: { id: "sonic", imgCount: 5, projectId: "1350922870" },
+      2: { id: "level", imgCount: 4, projectId: "1350923590" },
+      3: { id: "ring", imgCount: 4, projectId: "1350923805" },
+      4: { id: "crabe", imgCount: 4, projectId: "1350923886" }
     };
 
-    document.getElementById("video").src = `https://www.youtube.com/embed/${videos[partie]}`;
+    let currentPartie = 1;
+    let currentImageIndex = 1;
 
-    const buttons = document.querySelectorAll(".video-buttons button");
-    buttons.forEach(btn => btn.classList.remove("active"));
-    document.querySelector(`.video-buttons button:nth-child(${partie})`).classList.add("active");
-  }
+    function changerPartie(partieStr) {
+      currentPartie = parseInt(partieStr);
+      currentImageIndex = 1;
 
-  window.onload = () => changerVideo(1);
-</script>
+      // Mise à jour de l'état des boutons
+      const buttons = document.querySelectorAll(".part-buttons button");
+      buttons.forEach(btn => btn.classList.remove("active"));
+      document.getElementById(`btn-part-${currentPartie}`).classList.add("active");
+
+      // Mise à jour de l'iframe de version
+      const partieData = parties[currentPartie];
+      const iframe = document.getElementById("version-iframe");
+      iframe.src = `https://scratch.mit.edu/projects/${partieData.projectId}/embed`;
+
+      updateScreenshot();
+    }
+
+    function changerCapture(direction) {
+      const partieData = parties[currentPartie];
+      let newIndex = currentImageIndex + direction;
+
+      // Contrainte d'index
+      if (newIndex >= 1 && newIndex <= partieData.imgCount) {
+        currentImageIndex = newIndex;
+        updateScreenshot();
+      }
+    }
+
+    function updateScreenshot() {
+      const partieData = parties[currentPartie];
+
+      // Mettre à jour l'image
+      const img = document.getElementById("screenshot-display");
+      img.src = `projets/Sonic/sonic-screen/${partieData.id}/${currentImageIndex}.png`;
+
+      // Mettre à jour le compteur texte
+      document.getElementById("screenshot-counter").innerText = `${currentImageIndex} / ${partieData.imgCount}`;
+
+      // Gérer l'état des boutons précédent / suivant
+      document.getElementById("btn-prev").disabled = (currentImageIndex === 1);
+      document.getElementById("btn-next").disabled = (currentImageIndex === partieData.imgCount);
+    }
+
+    // Modale Plein Écran
+    function openFullscreen() {
+      const modal = document.getElementById("image-modal");
+      const modalImg = document.getElementById("modal-img");
+      modal.style.display = "block";
+      modalImg.src = document.getElementById("screenshot-display").src;
+    }
+
+    function closeFullscreen() {
+      document.getElementById("image-modal").style.display = "none";
+    }
+
+    // Initialisation à la partie 1
+    window.onload = () => changerPartie(1);
+  </script>
 
 
 </body>
+
 </html>
