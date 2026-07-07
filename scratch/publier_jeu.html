@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publier ton jeu Scratch sur une page web</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="style_scratch.css">
+  <style>
+    .code-block {
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      padding: 20px;
+      border-radius: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.85em;
+      line-height: 1.7;
+      overflow-x: auto;
+      text-align: left;
+      margin: 15px auto;
+      max-width: 780px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .code-block .comment {
+      color: #6a9955;
+    }
+
+    .code-block .tag {
+      color: #569cd6;
+    }
+
+    .code-block .attr {
+      color: #9cdcfe;
+    }
+
+    .code-block .value {
+      color: #ce9178;
+    }
+
+    .code-block .text {
+      color: #d4d4d4;
+    }
+
+    .code-block .highlight {
+      background-color: rgba(255, 217, 0, 0.15);
+      border-left: 3px solid #ffaa00;
+      padding: 2px 8px;
+      display: inline-block;
+      width: calc(100% - 16px);
+      border-radius: 3px;
+    }
+
+    .step-card {
+      background-color: #fff3e0;
+      padding: 20px 25px;
+      border-radius: 12px;
+      margin: 20px auto;
+      max-width: 800px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      border-left: 5px solid #ffaa00;
+    }
+
+    .step-card h3 {
+      color: #e65100;
+      margin-top: 0;
+    }
+
+    .step-card p {
+      margin-bottom: 0.5em;
+    }
+
+    .step-number {
+      display: inline-block;
+      background: #ffaa00;
+      color: white;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      text-align: center;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1em;
+      margin-right: 8px;
+    }
+
+    .btn-test {
+      background: linear-gradient(135deg, #ff9800, #f57c00);
+      color: white;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.15em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 12px;
+      box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    }
+
+    .btn-test:hover {
+      transform: scale(1.06);
+      box-shadow: 0 6px 18px rgba(255, 152, 0, 0.45);
+      text-decoration: none;
+      color: white;
+    }
+
+
+
+    .test-section {
+      background-color: #e8f5e9;
+      padding: 25px;
+      border-radius: 12px;
+      margin: 25px auto;
+      max-width: 800px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .test-section h2 {
+      color: #2e7d32;
+    }
+
+    .iframe-explain {
+      background: #e3f2fd;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin: 10px auto;
+      max-width: 750px;
+      text-align: left;
+    }
+
+    .iframe-explain code {
+      background: #bbdefb;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🌐 Publie ton jeu Scratch sur une page web !</h1>
+    <p>Apprends à créer ta propre page HTML pour montrer ton jeu</p>
+  </header>
+
+  <nav>
+    <a href="../index.html">🏠 Accueil</a>
+    <a href="../debutant.html">← Retour aux projets débutants</a>
+  </nav>
+
+  <main class="content">
+
+    <section class="intro">
+      <h2>C'est quoi le but ? 🤔</h2>
+      <p>Tu as créé un super jeu sur <strong>Scratch</strong> ? Maintenant tu vas apprendre à le mettre sur <strong>ta propre page web</strong> en HTML !</p>
+      <p>Tu vas recopier un code HTML, y mettre le <strong>nom de ton jeu</strong>, <strong>ton prénom</strong>, et le <strong>lien de ton jeu Scratch</strong>. C'est parti ! 🚀</p>
+    </section>
+
+    <!-- ETAPE 1 -->
+    <div class="step-card">
+      <h3><span class="step-number">1</span> Récupérer le lien de ton jeu Scratch</h3>
+      <p>Va sur <a href="https://scratch.mit.edu/" target="_blank">scratch.mit.edu</a>, ouvre ton projet et regarde l'URL dans la barre d'adresse.</p>
+      <p>Elle ressemble à ça : <code>https://scratch.mit.edu/projects/<strong>123456789</strong>/</code></p>
+      <p>📝 Note bien le <strong>numéro</strong> de ton projet, tu en auras besoin !</p>
+    </div>
+
+    <!-- ETAPE 2 -->
+    <div class="step-card">
+      <h3><span class="step-number">2</span> Comprendre le code à recopier</h3>
+      <p>Voici le code HTML complet. Tu dois le recopier dans un fichier <code>.html</code> sur ton ordinateur.</p>
+      <p>⚠️ Les <strong>3 lignes en jaune</strong> sont celles que tu dois <strong>personnaliser</strong> !</p>
+    </div>
+
+    <!-- CODE BLOCK -->
+    <section>
+      <h2>📝 Le code à recopier</h2>
+      <div class="code-block">
+<pre>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="value">"fr"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="value">"UTF-8"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="value">"viewport"</span> <span class="attr">content</span>=<span class="value">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;title&gt;</span><span class="text">Mon Jeu Scratch</span><span class="tag">&lt;/title&gt;</span>
+    <span class="tag">&lt;style&gt;</span>
+        <span class="text">body {</span>
+            <span class="text">font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;</span>
+            <span class="text">background-color: #f0f2f5;</span>
+            <span class="text">color: #333;</span>
+            <span class="text">margin: 0; padding: 0;</span>
+            <span class="text">display: flex; flex-direction: column;</span>
+            <span class="text">align-items: center; justify-content: center;</span>
+            <span class="text">min-height: 100vh;</span>
+        <span class="text">}</span>
+        <span class="text">header { text-align: center; margin-bottom: 20px; }</span>
+        <span class="text">h1 { color: #ffaa00; font-size: 3em; margin: 0;</span>
+             <span class="text">text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }</span>
+        <span class="text">.game-container {</span>
+            <span class="text">background-color: white; padding: 20px;</span>
+            <span class="text">border-radius: 15px;</span>
+            <span class="text">box-shadow: 0 10px 20px rgba(0,0,0,0.1);</span>
+            <span class="text">width: 485px; height: 402px;</span>
+            <span class="text">display: flex; justify-content: center;</span>
+            <span class="text">align-items: center;</span>
+        <span class="text">}</span>
+        <span class="text">iframe { border: none; width: 100%; height: 100%;</span>
+                <span class="text">border-radius: 8px; }</span>
+        <span class="text">footer { margin-top: 30px; text-align: center; }</span>
+        <span class="text">.credits { font-size: 1.5em; color: #555;</span>
+                  <span class="text">background-color: white; padding: 10px 20px;</span>
+                  <span class="text">border-radius: 25px;</span>
+                  <span class="text">box-shadow: 0 4px 6px rgba(0,0,0,0.05); }</span>
+        <span class="text">.credits strong { color: #4a90e2; }</span>
+    <span class="tag">&lt;/style&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+
+    <span class="tag">&lt;header&gt;</span>
+        <span class="highlight"><span class="tag">&lt;h1&gt;</span><span class="text">⭐ Mon Super Jeu ⭐</span><span class="tag">&lt;/h1&gt;</span>  <span class="comment">&lt;!-- ✏️ CHANGE LE TITRE DE TON JEU ICI --&gt;</span></span>
+    <span class="tag">&lt;/header&gt;</span>
+
+    <span class="tag">&lt;main</span> <span class="attr">class</span>=<span class="value">"game-container"</span><span class="tag">&gt;</span>
+        <span class="highlight"><span class="tag">&lt;iframe</span> <span class="attr">src</span>=<span class="value">"https://scratch.mit.edu/projects/<strong>TON_NUMERO</strong>/embed"</span>            <span class="comment">&lt;!-- ✏️ REMPLACE TON_NUMERO PAR LE NUMERO DE TON PROJET --&gt;</span></span>
+                <span class="attr">allowtransparency</span>=<span class="value">"true"</span> <span class="attr">width</span>=<span class="value">"485"</span> <span class="attr">height</span>=<span class="value">"402"</span>
+                <span class="attr">frameborder</span>=<span class="value">"0"</span> <span class="attr">scrolling</span>=<span class="value">"no"</span> <span class="attr">allowfullscreen</span><span class="tag">&gt;&lt;/iframe&gt;</span>
+    <span class="tag">&lt;/main&gt;</span>
+
+    <span class="tag">&lt;footer&gt;</span>
+        <span class="highlight"><span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="value">"credits"</span><span class="tag">&gt;</span><span class="text">Jeu fait par : </span><span class="tag">&lt;strong&gt;</span><span class="text">Ton Prénom</span><span class="tag">&lt;/strong&gt;&lt;/p&gt;</span>  <span class="comment">&lt;!-- ✏️ METS TON PRENOM ICI --&gt;</span></span>
+    <span class="tag">&lt;/footer&gt;</span>
+
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span>
+</pre>
+      </div>
+    </section>
+
+    <!-- ETAPE 3 -->
+    <div class="step-card">
+      <h3><span class="step-number">3</span> Les 3 choses à personnaliser</h3>
+      <p>Dans le code, tu dois changer <strong>3 choses</strong> (les lignes en jaune) :</p>
+      <div class="iframe-explain">
+        <p>🎮 <strong>Ligne 1 :</strong> Remplace <code>⭐ Mon Super Jeu ⭐</code> par le <strong>nom de ton jeu</strong></p>
+        <p>🔗 <strong>Ligne 2 :</strong> Remplace <code>TON_NUMERO</code> par le <strong>numéro de ton projet Scratch</strong><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Exemple : si ton URL est <code>scratch.mit.edu/projects/<strong>1191256461</strong>/</code>, mets <code>1191256461</code></p>
+        <p>👤 <strong>Ligne 3 :</strong> Remplace <code>Ton Prénom</code> par <strong>ton vrai prénom</strong></p>
+      </div>
+    </div>
+
+
+
+    <!-- LIEN TEST -->
+    <section class="test-section">
+      <h2>🧪 Voir le modèle vide</h2>
+      <p>Clique ici pour voir à quoi ressemble la page <strong>avant</strong> d'être personnalisée :</p>
+      <a href="../test-scratch.html">
+        <button class="btn-test">👀 Voir le modèle test-scratch.html</button>
+      </a>
+    </section>
+
+  </main>
+
+
+
+</body>
+</html>

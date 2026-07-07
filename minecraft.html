@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Créer son pack de textures Minecraft</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+
+
+        .steps {
+            background-color: #e8f5e9;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            text-align: left;
+        }
+
+        .steps h2 {
+            color: #2e7d32;
+            text-align: center;
+        }
+
+        .steps ol {
+            padding-left: 20px;
+            line-height: 2;
+            font-size: 1.05em;
+        }
+
+        .steps ol li {
+            margin-bottom: 8px;
+        }
+
+        .steps ol li strong {
+            color: #1b5e20;
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px auto;
+            max-width: 800px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        .download-section h2 {
+            color: #e65100;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #43a047, #2e7d32);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.15em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 12px;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+
+        .btn-download:hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 18px rgba(46, 125, 50, 0.45);
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-download:active {
+            transform: scale(0.97);
+        }
+
+        .video-section {
+            background-color: #e3f2fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px auto;
+            max-width: 800px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        .video-section h2 {
+            color: #1565c0;
+        }
+
+        .video-section iframe {
+            margin-top: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            max-width: 100%;
+        }
+
+
+
+        @media (max-width: 600px) {
+            .minecraft-hero h1 {
+                font-size: 1.5em;
+            }
+
+            .steps, .download-section, .video-section {
+                margin: 15px;
+                padding: 15px;
+            }
+
+            iframe {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>⛏️ Créer son Pack de Textures Minecraft</h1>
+        <p>Personnalise ton jeu avec tes propres textures !</p>
+    </header>
+
+    <nav>
+        <a href="index.html">🏠 Accueil</a>
+        <a href="debutant.html">✨ Débutant</a>
+        <a href="intermediaire.html">🧩 Intermédiaire</a>
+        <a href="confirme.html">🚀 Confirmé</a>
+        <a href="roblox.html">🎮 Roblox</a>
+        <a href="minecraft.html">⛏️ Minecraft</a>
+    </nav>
+
+    <main>
+
+        <section class="steps">
+            <h2>📋 Les étapes pour créer ton pack</h2>
+            <ol>
+                <li><strong>Télécharge le pack vanilla</strong> — Clique sur le bouton ci-dessous pour récupérer le pack de textures de base de Minecraft 1.21.</li>
+                <li><strong>Décompresse le fichier ZIP</strong> — Fais un clic droit sur le fichier téléchargé → <em>« Extraire tout »</em>.</li>
+                <li><strong>Ouvre les textures avec Paint.NET</strong> — Va dans le dossier <code>assets/minecraft/textures</code> et ouvre les fichiers <code>.png</code> que tu veux modifier.</li>
+                <li><strong>Modifie les textures</strong> — Utilise Paint.NET pour dessiner tes propres textures pixel par pixel (16×16 pixels en général).</li>
+                <li><strong>Sauvegarde tes modifications</strong> — Enregistre chaque fichier en gardant le même nom et le même format <code>.png</code>.</li>
+                <li><strong>Re-compresse le dossier en ZIP</strong> — Sélectionne tous les fichiers du pack → clic droit → <em>« Compresser en fichier ZIP »</em>.</li>
+                <li><strong>Place le ZIP dans Minecraft</strong> — Va dans <em>Options → Packs de ressources</em> et ajoute ton pack !</li>
+            </ol>
+        </section>
+
+        <section class="download-section">
+            <h2>📦 Télécharger le pack vanilla 1.21</h2>
+            <p>C'est le pack de textures de base de Minecraft. Tu vas le modifier pour créer <strong>ton propre pack personnalisé</strong> !</p>
+            <a href="minecraft/1.21-Template.zip" download>
+                <button class="btn-download">⬇️ Télécharger le pack 1.21 (Template)</button>
+            </a>
+        </section>
+
+        <section class="video-section">
+            <h2>🎥 Tutoriel vidéo : Créer un pack avec Paint.NET</h2>
+            <p>Regarde cette vidéo pour apprendre comment modifier les textures étape par étape avec le logiciel <strong>Paint.NET</strong> :</p>
+            <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/l-vzCzKDJmU"
+                title="Tutoriel Pack de Textures Minecraft avec Paint.NET"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </section>
+
+
+
+    </main>
+
+</body>
+
+</html>
