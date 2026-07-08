@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Apprends les bases du langage Java : variables, conditions, boucles, fonctions et premiers programmes.">
+  <title>Les bases de Java ☕ – Apprendre la programmation</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    /* ===== Code blocks styling ===== */
+    .code-block {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 16px auto;
+      max-width: 700px;
+      text-align: left;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.92em;
+      line-height: 1.7;
+      overflow-x: auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      position: relative;
+      border: 1px solid #313244;
+    }
+
+    .code-block::before {
+      content: attr(data-lang);
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 0.7em;
+      color: #6c7086;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .code-block code {
+      white-space: pre;
+      display: block;
+    }
+
+    /* Syntax highlighting */
+    .kw { color: #cba6f7; font-weight: bold; }   /* keywords: public, class, int, etc. */
+    .ty { color: #89b4fa; }                        /* types */
+    .str { color: #a6e3a1; }                       /* strings */
+    .cm { color: #6c7086; font-style: italic; }    /* comments */
+    .fn { color: #f9e2af; }                        /* function names */
+    .num { color: #fab387; }                       /* numbers */
+    .op { color: #89dceb; }                        /* operators */
+    .sys { color: #f38ba8; }                       /* system calls */
+
+    /* ===== Section titles with icons ===== */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .section-title .icon {
+      font-size: 1.5em;
+    }
+
+    /* ===== Concept cards ===== */
+    .concept-card {
+      background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+      border-left: 5px solid #ff9800;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 12px auto;
+      max-width: 700px;
+      text-align: left;
+    }
+
+    .concept-card h4 {
+      color: #e65100;
+      margin: 0 0 6px;
+    }
+
+    .concept-card p {
+      margin: 0;
+      font-size: 0.95em;
+    }
+
+    /* ===== Output block ===== */
+    .output-block {
+      background: #f1f8e9;
+      border-left: 5px solid #4caf50;
+      border-radius: 10px;
+      padding: 12px 20px;
+      margin: 10px auto;
+      max-width: 700px;
+      text-align: left;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.9em;
+      color: #2e7d32;
+    }
+
+    .output-block::before {
+      content: "📺 Résultat en console :";
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-family: 'Comic Sans MS', sans-serif;
+      color: #1b5e20;
+    }
+
+    /* ===== Table of contents ===== */
+    .toc {
+      background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 16px auto;
+      max-width: 500px;
+      text-align: left;
+    }
+
+    .toc h3 {
+      text-align: center;
+      color: #283593;
+      margin-top: 0;
+    }
+
+    .toc ol {
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 8px 0;
+      font-size: 1.05em;
+    }
+
+    .toc a {
+      color: #1a237e;
+      font-weight: bold;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .toc a:hover {
+      color: #007bff;
+      text-decoration: underline;
+    }
+
+    /* ===== Tip box ===== */
+    .tip-box {
+      background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+      border-left: 5px solid #00acc1;
+      border-radius: 10px;
+      padding: 14px 20px;
+      margin: 12px auto;
+      max-width: 700px;
+      text-align: left;
+    }
+
+    .tip-box strong {
+      color: #006064;
+    }
+
+    /* ===== Warning box ===== */
+    .warning-box {
+      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+      border-left: 5px solid #e91e63;
+      border-radius: 10px;
+      padding: 14px 20px;
+      margin: 12px auto;
+      max-width: 700px;
+      text-align: left;
+    }
+
+    .warning-box strong {
+      color: #880e4f;
+    }
+
+    /* ===== Back button ===== */
+    .back-btn {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 3px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    .back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+      color: white;
+      text-decoration: none;
+    }
+
+    /* ===== Animations ===== */
+    section {
+      animation: fadeIn 0.6s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Scrollbar styling for code blocks ===== */
+    .code-block::-webkit-scrollbar {
+      height: 6px;
+    }
+    .code-block::-webkit-scrollbar-track {
+      background: #313244;
+      border-radius: 3px;
+    }
+    .code-block::-webkit-scrollbar-thumb {
+      background: #585b70;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Les bases de Java ☕</h1>
+    <p>Apprends les fondamentaux de la programmation avec Java !</p>
+  </header>
+
+  <nav>
+    <a href="../index.html">🏠 Accueil</a>
+    <a href="../debutant.html">✨ Débutant</a>
+    <a href="../intermediaire.html">🧩 Intermédiaire</a>
+    <a href="../confirme.html">🚀 Confirmé</a>
+    <a href="../langages.html">📖 Langages</a>
+    <a href="../roblox.html">🎮 Roblox</a>
+    <a href="../minecraft.html">⛏️ Minecraft</a>
+  </nav>
+
+  <main class="content">
+
+    <!-- ====== INTRODUCTION ====== -->
+    <section class="intro">
+      <h2>☕ Bienvenue dans le cours Java !</h2>
+      <p>Java est l'un des langages de programmation les plus utilisés au monde. Il sert à créer des applications mobiles
+        (Android), des logiciels, des serveurs web et même des jeux comme <strong>Minecraft</strong> !</p>
+      <p>Sur cette page, tu vas apprendre les <strong>bases indispensables</strong> pour écrire tes premiers programmes
+        Java. C'est parti ! 🚀</p>
+    </section>
+
+    <!-- ====== TABLE DES MATIERES ====== -->
+    <section>
+      <div class="toc">
+        <h3>📋 Sommaire</h3>
+        <ol>
+          <li><a href="#premier-programme">Mon premier programme</a></li>
+          <li><a href="#variables">Les variables</a></li>
+          <li><a href="#types">Les types de données</a></li>
+          <li><a href="#operations">Les opérations</a></li>
+          <li><a href="#conditions">Les conditions (if/else)</a></li>
+          <li><a href="#boucles">Les boucles (for, while)</a></li>
+          <li><a href="#fonctions">Les fonctions (méthodes)</a></li>
+          <li><a href="#tableaux">Les tableaux</a></li>
+          <li><a href="#input">Lire une entrée utilisateur</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ====== 1. PREMIER PROGRAMME ====== -->
+    <section id="premier-programme">
+      <h2 class="section-title"><span class="icon">🎬</span> 1. Mon premier programme</h2>
+
+      <p>Voici le programme le plus simple en Java. Il affiche un message dans la console :</p>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">public class</span> <span class="ty">MonPremierProgramme</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="ty">String</span>[] args) {
+        <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Bonjour le monde !"</span>);
+    }
+}</code>
+      </div>
+
+      <div class="output-block">Bonjour le monde !</div>
+
+      <div class="concept-card">
+        <h4>💡 Qu'est-ce que ça veut dire ?</h4>
+        <p><strong>public class</strong> → On crée une « classe » (un fichier de code Java).<br>
+          <strong>public static void main</strong> → C'est la <strong>fonction principale</strong>, celle que Java exécute en premier.<br>
+          <strong>System.out.println()</strong> → Affiche du texte dans la console.</p>
+      </div>
+
+      <div class="warning-box">
+        <strong>⚠️ Attention !</strong> En Java, le nom du fichier doit <strong>toujours</strong> correspondre au nom de
+        la classe. Ici le fichier doit s'appeler <code>MonPremierProgramme.java</code>.
+      </div>
+    </section>
+
+    <!-- ====== 2. LES VARIABLES ====== -->
+    <section id="variables">
+      <h2 class="section-title"><span class="icon">📦</span> 2. Les variables</h2>
+
+      <p>Une <strong>variable</strong>, c'est comme une boîte qui contient une information. On lui donne un nom et une valeur.</p>
+
+      <div class="code-block" data-lang="java">
+<code><span class="cm">// Déclarer des variables</span>
+<span class="kw">int</span> age <span class="op">=</span> <span class="num">14</span>;                    <span class="cm">// Un nombre entier</span>
+<span class="kw">double</span> taille <span class="op">=</span> <span class="num">1.65</span>;             <span class="cm">// Un nombre à virgule</span>
+<span class="ty">String</span> prenom <span class="op">=</span> <span class="str">"Adrien"</span>;         <span class="cm">// Du texte</span>
+<span class="kw">boolean</span> estEleve <span class="op">=</span> <span class="kw">true</span>;          <span class="cm">// Vrai ou faux</span>
+<span class="kw">char</span> initiale <span class="op">=</span> <span class="str">'A'</span>;              <span class="cm">// Un seul caractère</span>
+
+<span class="cm">// Afficher les variables</span>
+<span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Je m'appelle "</span> <span class="op">+</span> prenom);
+<span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"J'ai "</span> <span class="op">+</span> age <span class="op">+</span> <span class="str">" ans"</span>);</code>
+      </div>
+
+      <div class="output-block">Je m'appelle Adrien<br>J'ai 14 ans</div>
+
+      <div class="tip-box">
+        <strong>💡 Astuce :</strong> En Java, on utilise le <code>+</code> pour « coller » du texte et des variables
+        ensemble. C'est ce qu'on appelle la <strong>concaténation</strong>.
+      </div>
+    </section>
+
+    <!-- ====== 3. LES TYPES ====== -->
+    <section id="types">
+      <h2 class="section-title"><span class="icon">🏷️</span> 3. Les types de données</h2>
+
+      <p>En Java, chaque variable a un <strong>type</strong> qui dit quel genre de donnée elle contient :</p>
+
+      <table style="margin: 16px auto; border-collapse: collapse; max-width: 600px; width: 100%;">
+        <thead>
+          <tr style="background: #007bff; color: white;">
+            <th style="padding: 10px 16px; border-radius: 8px 0 0 0;">Type</th>
+            <th style="padding: 10px 16px;">Description</th>
+            <th style="padding: 10px 16px; border-radius: 0 8px 0 0;">Exemple</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #e3f2fd;">
+            <td style="padding: 8px 16px;"><code>int</code></td>
+            <td style="padding: 8px 16px;">Nombre entier</td>
+            <td style="padding: 8px 16px;"><code>42</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 16px;"><code>double</code></td>
+            <td style="padding: 8px 16px;">Nombre à virgule</td>
+            <td style="padding: 8px 16px;"><code>3.14</code></td>
+          </tr>
+          <tr style="background: #e3f2fd;">
+            <td style="padding: 8px 16px;"><code>String</code></td>
+            <td style="padding: 8px 16px;">Texte (chaîne de caractères)</td>
+            <td style="padding: 8px 16px;"><code>"Salut"</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 16px;"><code>boolean</code></td>
+            <td style="padding: 8px 16px;">Vrai ou faux</td>
+            <td style="padding: 8px 16px;"><code>true / false</code></td>
+          </tr>
+          <tr style="background: #e3f2fd;">
+            <td style="padding: 8px 16px;"><code>char</code></td>
+            <td style="padding: 8px 16px;">Un seul caractère</td>
+            <td style="padding: 8px 16px;"><code>'A'</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="concept-card">
+        <h4>📌 Différence entre <code>int</code> et <code>double</code></h4>
+        <p><code>int</code> stocke des nombres <strong>sans virgule</strong> (1, 42, -7).<br>
+          <code>double</code> stocke des nombres <strong>avec virgule</strong> (3.14, 1.5, -0.001).</p>
+      </div>
+    </section>
+
+    <!-- ====== 4. LES OPERATIONS ====== -->
+    <section id="operations">
+      <h2 class="section-title"><span class="icon">🔢</span> 4. Les opérations</h2>
+
+      <p>On peut faire des calculs comme en maths :</p>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">int</span> a <span class="op">=</span> <span class="num">10</span>;
+<span class="kw">int</span> b <span class="op">=</span> <span class="num">3</span>;
+
+<span class="sys">System</span>.out.<span class="fn">println</span>(a <span class="op">+</span> b);    <span class="cm">// Addition      → 13</span>
+<span class="sys">System</span>.out.<span class="fn">println</span>(a <span class="op">-</span> b);    <span class="cm">// Soustraction   → 7</span>
+<span class="sys">System</span>.out.<span class="fn">println</span>(a <span class="op">*</span> b);    <span class="cm">// Multiplication → 30</span>
+<span class="sys">System</span>.out.<span class="fn">println</span>(a <span class="op">/</span> b);    <span class="cm">// Division       → 3</span>
+<span class="sys">System</span>.out.<span class="fn">println</span>(a <span class="op">%</span> b);    <span class="cm">// Modulo (reste) → 1</span></code>
+      </div>
+
+      <div class="tip-box">
+        <strong>💡 Le modulo (<code>%</code>)</strong> donne le <strong>reste</strong> de la division.
+        Par exemple : 10 ÷ 3 = 3 reste <strong>1</strong>, donc <code>10 % 3</code> donne <code>1</code>.
+      </div>
+    </section>
+
+    <!-- ====== 5. LES CONDITIONS ====== -->
+    <section id="conditions">
+      <h2 class="section-title"><span class="icon">🔀</span> 5. Les conditions (if / else)</h2>
+
+      <p>Les conditions permettent de <strong>prendre des décisions</strong> dans ton programme :</p>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">int</span> age <span class="op">=</span> <span class="num">16</span>;
+
+<span class="kw">if</span> (age <span class="op">>=</span> <span class="num">18</span>) {
+    <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Tu es majeur !"</span>);
+} <span class="kw">else if</span> (age <span class="op">>=</span> <span class="num">13</span>) {
+    <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Tu es adolescent !"</span>);
+} <span class="kw">else</span> {
+    <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Tu es un enfant !"</span>);
+}</code>
+      </div>
+
+      <div class="output-block">Tu es adolescent !</div>
+
+      <p>Voici les <strong>opérateurs de comparaison</strong> :</p>
+
+      <table style="margin: 16px auto; border-collapse: collapse; max-width: 500px; width: 100%;">
+        <thead>
+          <tr style="background: #007bff; color: white;">
+            <th style="padding: 10px 16px; border-radius: 8px 0 0 0;">Opérateur</th>
+            <th style="padding: 10px 16px; border-radius: 0 8px 0 0;">Signification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #e3f2fd;">
+            <td style="padding: 8px 16px; text-align: center;"><code>==</code></td>
+            <td style="padding: 8px 16px;">Égal à</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 16px; text-align: center;"><code>!=</code></td>
+            <td style="padding: 8px 16px;">Différent de</td>
+          </tr>
+          <tr style="background: #e3f2fd;">
+            <td style="padding: 8px 16px; text-align: center;"><code>&gt;</code></td>
+            <td style="padding: 8px 16px;">Plus grand que</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 16px; text-align: center;"><code>&lt;</code></td>
+            <td style="padding: 8px 16px;">Plus petit que</td>
+          </tr>
+          <tr style="background: #e3f2fd;">
+            <td style="padding: 8px 16px; text-align: center;"><code>&gt;=</code></td>
+            <td style="padding: 8px 16px;">Plus grand ou égal</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 16px; text-align: center;"><code>&lt;=</code></td>
+            <td style="padding: 8px 16px;">Plus petit ou égal</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ====== 6. LES BOUCLES ====== -->
+    <section id="boucles">
+      <h2 class="section-title"><span class="icon">🔁</span> 6. Les boucles</h2>
+
+      <p>Les boucles permettent de <strong>répéter</strong> des instructions plusieurs fois.</p>
+
+      <h3>🔄 La boucle <code>for</code></h3>
+      <p>Quand tu sais combien de fois tu veux répéter :</p>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">for</span> (<span class="kw">int</span> i <span class="op">=</span> <span class="num">1</span>; i <span class="op">&lt;=</span> <span class="num">5</span>; i<span class="op">++</span>) {
+    <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Tour numéro "</span> <span class="op">+</span> i);
+}</code>
+      </div>
+
+      <div class="output-block">
+        Tour numéro 1<br>
+        Tour numéro 2<br>
+        Tour numéro 3<br>
+        Tour numéro 4<br>
+        Tour numéro 5
+      </div>
+
+      <div class="concept-card">
+        <h4>💡 Comment lire une boucle for ?</h4>
+        <p><code>int i = 1</code> → On commence à 1.<br>
+          <code>i &lt;= 5</code> → On continue tant que i est ≤ 5.<br>
+          <code>i++</code> → À chaque tour, i augmente de 1.</p>
+      </div>
+
+      <h3>🔄 La boucle <code>while</code></h3>
+      <p>Quand tu ne sais pas combien de fois ça va se répéter :</p>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">int</span> compteur <span class="op">=</span> <span class="num">0</span>;
+
+<span class="kw">while</span> (compteur <span class="op">&lt;</span> <span class="num">3</span>) {
+    <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Compteur = "</span> <span class="op">+</span> compteur);
+    compteur<span class="op">++</span>;
+}</code>
+      </div>
+
+      <div class="output-block">
+        Compteur = 0<br>
+        Compteur = 1<br>
+        Compteur = 2
+      </div>
+    </section>
+
+    <!-- ====== 7. LES FONCTIONS ====== -->
+    <section id="fonctions">
+      <h2 class="section-title"><span class="icon">🧩</span> 7. Les fonctions (méthodes)</h2>
+
+      <p>Une <strong>fonction</strong> (on dit « méthode » en Java) est un bloc de code réutilisable. Au lieu de
+        réécrire le même code, tu l'appelles par son nom !</p>
+
+      <h3>📌 Fonction simple (sans retour)</h3>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">public static void</span> <span class="fn">direBonjour</span>() {
+    <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Bonjour ! 👋"</span>);
+}
+
+<span class="cm">// Dans le main :</span>
+<span class="fn">direBonjour</span>();   <span class="cm">// Affiche : Bonjour ! 👋</span>
+<span class="fn">direBonjour</span>();   <span class="cm">// Affiche : Bonjour ! 👋</span></code>
+      </div>
+
+      <h3>📌 Fonction avec paramètres</h3>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">public static void</span> <span class="fn">saluer</span>(<span class="ty">String</span> nom) {
+    <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Salut "</span> <span class="op">+</span> nom <span class="op">+</span> <span class="str">" !"</span>);
+}
+
+<span class="cm">// Dans le main :</span>
+<span class="fn">saluer</span>(<span class="str">"Adrien"</span>);    <span class="cm">// Affiche : Salut Adrien !</span>
+<span class="fn">saluer</span>(<span class="str">"Théo"</span>);      <span class="cm">// Affiche : Salut Théo !</span></code>
+      </div>
+
+      <h3>📌 Fonction qui retourne une valeur</h3>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">public static int</span> <span class="fn">additionner</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">return</span> a <span class="op">+</span> b;
+}
+
+<span class="cm">// Dans le main :</span>
+<span class="kw">int</span> resultat <span class="op">=</span> <span class="fn">additionner</span>(<span class="num">5</span>, <span class="num">3</span>);
+<span class="sys">System</span>.out.<span class="fn">println</span>(resultat);   <span class="cm">// Affiche : 8</span></code>
+      </div>
+
+      <div class="concept-card">
+        <h4>💡 <code>void</code> vs <code>int</code> / <code>String</code></h4>
+        <p><strong>void</strong> = la fonction ne renvoie rien, elle fait juste une action.<br>
+          <strong>int</strong>, <strong>String</strong>, etc. = la fonction renvoie un résultat qu'on peut stocker dans une variable.</p>
+      </div>
+    </section>
+
+    <!-- ====== 8. LES TABLEAUX ====== -->
+    <section id="tableaux">
+      <h2 class="section-title"><span class="icon">📋</span> 8. Les tableaux</h2>
+
+      <p>Un <strong>tableau</strong> (array) permet de stocker <strong>plusieurs valeurs</strong> dans une seule
+        variable :</p>
+
+      <div class="code-block" data-lang="java">
+<code><span class="cm">// Créer un tableau de prénoms</span>
+<span class="ty">String</span>[] prenoms <span class="op">=</span> {<span class="str">"Adrien"</span>, <span class="str">"Théo"</span>, <span class="str">"Lucas"</span>, <span class="str">"Emma"</span>};
+
+<span class="cm">// Accéder à un élément (⚠️ ça commence à 0 !)</span>
+<span class="sys">System</span>.out.<span class="fn">println</span>(prenoms[<span class="num">0</span>]);   <span class="cm">// Adrien</span>
+<span class="sys">System</span>.out.<span class="fn">println</span>(prenoms[<span class="num">2</span>]);   <span class="cm">// Lucas</span>
+
+<span class="cm">// Parcourir tout le tableau avec une boucle</span>
+<span class="kw">for</span> (<span class="kw">int</span> i <span class="op">=</span> <span class="num">0</span>; i <span class="op">&lt;</span> prenoms.length; i<span class="op">++</span>) {
+    <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Bonjour "</span> <span class="op">+</span> prenoms[i]);
+}</code>
+      </div>
+
+      <div class="output-block">
+        Adrien<br>
+        Lucas<br>
+        Bonjour Adrien<br>
+        Bonjour Théo<br>
+        Bonjour Lucas<br>
+        Bonjour Emma
+      </div>
+
+      <div class="warning-box">
+        <strong>⚠️ Attention !</strong> En Java (et dans presque tous les langages), les tableaux commencent à
+        l'<strong>index 0</strong>, pas 1 ! Le premier élément est donc <code>prenoms[0]</code>.
+      </div>
+
+      <h3>🔄 Boucle <code>for-each</code> (plus simple)</h3>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">for</span> (<span class="ty">String</span> p : prenoms) {
+    <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Salut "</span> <span class="op">+</span> p <span class="op">+</span> <span class="str">" !"</span>);
+}</code>
+      </div>
+
+      <div class="output-block">
+        Salut Adrien !<br>
+        Salut Théo !<br>
+        Salut Lucas !<br>
+        Salut Emma !
+      </div>
+    </section>
+
+    <!-- ====== 9. INPUT UTILISATEUR ====== -->
+    <section id="input">
+      <h2 class="section-title"><span class="icon">⌨️</span> 9. Lire une entrée utilisateur</h2>
+
+      <p>Pour demander quelque chose à l'utilisateur, on utilise un <strong>Scanner</strong> :</p>
+
+      <div class="code-block" data-lang="java">
+<code><span class="kw">import</span> java.util.<span class="ty">Scanner</span>;
+
+<span class="kw">public class</span> <span class="ty">Questionnaire</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="ty">String</span>[] args) {
+        <span class="ty">Scanner</span> clavier <span class="op">=</span> <span class="kw">new</span> <span class="ty">Scanner</span>(<span class="sys">System</span>.in);
+
+        <span class="sys">System</span>.out.<span class="fn">print</span>(<span class="str">"Comment tu t'appelles ? "</span>);
+        <span class="ty">String</span> nom <span class="op">=</span> clavier.<span class="fn">nextLine</span>();
+
+        <span class="sys">System</span>.out.<span class="fn">print</span>(<span class="str">"Quel âge as-tu ? "</span>);
+        <span class="kw">int</span> age <span class="op">=</span> clavier.<span class="fn">nextInt</span>();
+
+        <span class="sys">System</span>.out.<span class="fn">println</span>(<span class="str">"Salut "</span> <span class="op">+</span> nom <span class="op">+</span> <span class="str">", tu as "</span> <span class="op">+</span> age <span class="op">+</span> <span class="str">" ans !"</span>);
+        clavier.<span class="fn">close</span>();
+    }
+}</code>
+      </div>
+
+      <div class="output-block">
+        Comment tu t'appelles ? <em>Adrien</em><br>
+        Quel âge as-tu ? <em>14</em><br>
+        Salut Adrien, tu as 14 ans !
+      </div>
+
+      <div class="concept-card">
+        <h4>💡 Les méthodes du Scanner</h4>
+        <p><code>nextLine()</code> → Lit du texte.<br>
+          <code>nextInt()</code> → Lit un nombre entier.<br>
+          <code>nextDouble()</code> → Lit un nombre à virgule.<br>
+          <code>close()</code> → Ferme le scanner (bonne pratique !).</p>
+      </div>
+    </section>
+
+    <!-- ====== CONCLUSION ====== -->
+    <section class="intro">
+      <h2>🎉 Bravo, tu connais les bases de Java !</h2>
+      <p>Tu as appris à :</p>
+      <ul class="no-bullets">
+        <li>✅ Écrire ton premier programme</li>
+        <li>✅ Déclarer et utiliser des variables</li>
+        <li>✅ Utiliser les conditions <code>if/else</code></li>
+        <li>✅ Créer des boucles <code>for</code> et <code>while</code></li>
+        <li>✅ Écrire des fonctions (méthodes)</li>
+        <li>✅ Manipuler des tableaux</li>
+        <li>✅ Lire les entrées de l'utilisateur</li>
+      </ul>
+      <p>Continue à pratiquer en créant tes propres petits programmes ! 💪</p>
+
+      <a href="../langages.html" class="back-btn">⬅️ Retour aux langages</a>
+    </section>
+
+  </main>
+
+</body>
+
+</html>

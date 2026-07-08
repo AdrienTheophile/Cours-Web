@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Découvre les bases des langages de programmation : Java, Python, C++ et plus encore !">
+  <title>Les Langages de Programmation – Apprendre les bases</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .langages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .langage-card {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border-radius: 14px;
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: #333;
+      display: block;
+      border: 2px solid transparent;
+    }
+
+    .langage-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+      border-color: #007bff;
+      text-decoration: none;
+    }
+
+    .langage-card .emoji {
+      font-size: 3em;
+      display: block;
+      margin-bottom: 12px;
+      animation: bounce 2s ease infinite;
+    }
+
+    .langage-card h3 {
+      color: #007bff;
+      margin: 8px 0 6px;
+      font-size: 1.3em;
+    }
+
+    .langage-card p {
+      font-size: 0.9em;
+      color: #555;
+      margin: 0;
+    }
+
+    .langage-card.coming-soon {
+      background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .langage-card.coming-soon:hover {
+      transform: none;
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15);
+      border-color: transparent;
+    }
+
+    .langage-card.coming-soon .badge {
+      display: inline-block;
+      background: #ff9800;
+      color: white;
+      font-size: 0.7em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 8px;
+      font-weight: bold;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .langages-grid .langage-card:nth-child(1) {
+      animation: fadeInUp 0.5s ease 0.1s both;
+    }
+
+    .langages-grid .langage-card:nth-child(2) {
+      animation: fadeInUp 0.5s ease 0.2s both;
+    }
+
+    .langages-grid .langage-card:nth-child(3) {
+      animation: fadeInUp 0.5s ease 0.3s both;
+    }
+
+    .langages-grid .langage-card:nth-child(4) {
+      animation: fadeInUp 0.5s ease 0.4s both;
+    }
+
+    .langages-grid .langage-card:nth-child(5) {
+      animation: fadeInUp 0.5s ease 0.5s both;
+    }
+
+    .langages-grid .langage-card:nth-child(6) {
+      animation: fadeInUp 0.5s ease 0.6s both;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Les Langages de Programmation 💻</h1>
+    <p>Choisis un langage et apprends les bases de la programmation !</p>
+  </header>
+
+  <nav>
+    <a href="index.html">🏠 Accueil</a>
+    <a href="debutant.html">✨ Débutant</a>
+    <a href="intermediaire.html">🧩 Intermédiaire</a>
+    <a href="confirme.html">🚀 Confirmé</a>
+    <a href="langages.html">📖 Langages</a>
+    <a href="roblox.html">🎮 Roblox</a>
+    <a href="minecraft.html">⛏️ Minecraft</a>
+  </nav>
+
+  <main class="content">
+
+    <section class="intro">
+      <h2>Bienvenue dans le monde des langages ! 🌍</h2>
+      <p>Chaque langage de programmation a ses propres règles, mais les <strong>bases sont souvent les mêmes</strong> :
+        déclarer des variables, utiliser des conditions, faire des boucles, et créer des fonctions.</p>
+      <p>Choisis un langage ci-dessous pour découvrir ses fondamentaux avec des exemples simples et clairs.</p>
+    </section>
+
+    <section>
+      <h2>📚 Choisis ton langage</h2>
+
+      <div class="langages-grid">
+
+        <a href="langages/java.html" class="langage-card" id="card-java">
+          <span class="emoji">☕</span>
+          <h3>Java</h3>
+          <p>Le langage classique pour apprendre la programmation orientée objet.</p>
+        </a>
+
+        <div class="langage-card coming-soon" id="card-python">
+          <span class="emoji">🐍</span>
+          <h3>Python</h3>
+          <p>Simple et puissant, parfait pour débuter.</p>
+          <span class="badge">Bientôt disponible</span>
+        </div>
+
+        <div class="langage-card coming-soon" id="card-cpp">
+          <span class="emoji">⚙️</span>
+          <h3>C++</h3>
+          <p>Rapide et puissant, utilisé dans les jeux et les systèmes.</p>
+          <span class="badge">Bientôt disponible</span>
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <h2>🤔 Comment ça marche ?</h2>
+      <p>Clique sur un langage pour accéder à sa page dédiée. Tu y trouveras :</p>
+      <ul class="no-bullets">
+        <li>📝 <strong>Déclaration de variables</strong> – Comment stocker des données</li>
+        <li>🔀 <strong>Conditions</strong> – Comment prendre des décisions (if/else)</li>
+        <li>🔁 <strong>Boucles</strong> – Comment répéter des actions (for, while)</li>
+        <li>🧩 <strong>Fonctions</strong> – Comment organiser et réutiliser ton code</li>
+        <li>📤 <strong>Affichage</strong> – Comment afficher du texte à l'écran</li>
+      </ul>
+    </section>
+
+  </main>
+
+</body>
+
+</html>
