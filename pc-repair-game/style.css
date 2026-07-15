@@ -372,7 +372,7 @@ body::before {
     background:transparent;
     display:flex; gap:8px; border-radius:3px; border:none;
     flex-direction:row;
-    z-index:8;
+    z-index:10;
 }
 .ram-stick {
     flex:1; position:relative; min-width:0;

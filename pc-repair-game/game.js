@@ -26,7 +26,9 @@ const COMPONENTS = [
 ];
 
 const FAULTS = [
+    // =======================================
     // ===== FACILE (1) =====
+    // =======================================
     {
         comp:'psu', difficulty:1,
         symptoms:[
@@ -84,8 +86,94 @@ const FAULTS = [
             bios:"Le BIOS ne liste aucun contrôleur réseau. La carte réseau n'est pas détectée !"
         }
     },
+    {
+        comp:'hdd', difficulty:1,
+        symptoms:[
+            "Mon PC démarre mais Windows ne se lance pas ! L'écran affiche juste « Reboot and Select proper Boot device ».",
+            "Quand j'allume mon PC, il me dit « No bootable device ». J'ai rien touché pourtant !"
+        ],
+        diag:{
+            visual:"Le PC s'allume normalement. Toutes les LED sont vertes. Rien de visible qui cloche.",
+            sound:"On n'entend aucun bruit de disque dur. Normalement il devrait tourner.",
+            temperature:"Températures CPU et GPU normales.",
+            multimeter:"Alimentation OK. Le câble SATA d'alimentation fournit du courant.",
+            bios:"Le BIOS ne détecte AUCUN périphérique de stockage. Le disque dur est invisible."
+        }
+    },
+    {
+        comp:'cable', difficulty:1,
+        symptoms:[
+            "Mon clavier et ma souris ne marchent plus ! Ils étaient branchés en USB et d'un coup, plus rien.",
+            "J'ai plein de périphériques USB qui ne fonctionnent plus. Ni la webcam, ni la clé USB, ni le casque."
+        ],
+        diag:{
+            visual:"Les ports USB à l'arrière semblent OK mais le câble interne USB de la carte mère est débranché.",
+            sound:"Pas de son anormal. Le PC fonctionne normalement par ailleurs.",
+            temperature:"Toutes les températures sont dans les normes.",
+            multimeter:"Alimentation OK. Le connecteur USB interne ne reçoit pas de signal.",
+            bios:"Le BIOS détecte les ports arrière mais pas les ports façade. Câble USB interne déconnecté."
+        }
+    },
+    {
+        comp:'fan', difficulty:1,
+        symptoms:[
+            "Mon PC fait un bruit de tondeuse ! C'est super fort et ça vibre beaucoup. Je n'ose plus l'allumer.",
+            "Depuis quelques jours mon PC fait un bruit horrible, comme un roulement cassé. Ça grince fort."
+        ],
+        diag:{
+            visual:"Le ventilateur CPU vibre beaucoup. Un des roulements semble mort, l'axe bouge.",
+            sound:"🔊 Bruit de roulement métallique très fort. Ça grince et ça vibre énormément.",
+            temperature:"🌡️ CPU à 78°C, un peu élevé. Le ventilateur tourne mais mal.",
+            multimeter:"Alimentation OK. Tensions normales.",
+            bios:"Le BIOS affiche : « CPU Fan Speed: Irregular ». Vitesse de rotation instable."
+        }
+    },
+    {
+        comp:'thermal', difficulty:1,
+        symptoms:[
+            "Mon PC rame quand je regarde des vidéos YouTube. Avant ça marchait bien mais maintenant c'est lent.",
+            "Mon ordinateur est devenu super lent pour tout. Même ouvrir un dossier prend du temps."
+        ],
+        diag:{
+            visual:"Le ventilateur tourne normalement. Pas de poussière visible. Le PC a 3 ans, jamais entretenu.",
+            sound:"Le ventilateur CPU tourne à fond en permanence, même sans rien faire.",
+            temperature:"🌡️ CPU à 85°C au repos ! La pâte thermique doit être sèche.",
+            multimeter:"Alimentation OK. Tout est bien alimenté.",
+            bios:"Le BIOS affiche : « CPU Temperature Warning: 85°C ». Surchauffe même sans charge."
+        }
+    },
+    {
+        comp:'psu', difficulty:1,
+        symptoms:[
+            "Mon PC ne démarre plus. Hier il marchait, ce matin j'appuie sur le bouton et rien du tout. Zéro.",
+            "Mon ordinateur est resté débranché pendant l'orage et maintenant il refuse de s'allumer."
+        ],
+        diag:{
+            visual:"Aucune LED dans le boîtier. Le ventilateur de l'alimentation ne tourne pas du tout.",
+            sound:"Aucun bruit. Silence complet quand on appuie sur le bouton.",
+            temperature:"Impossible de lire, la machine ne démarre pas.",
+            multimeter:"⚠️ L'alimentation ne fournit aucune tension. 0V sur tous les rails. PSU morte.",
+            bios:"Impossible d'accéder au BIOS, la machine ne s'allume pas."
+        }
+    },
+    {
+        comp:'nic', difficulty:1,
+        symptoms:[
+            "Internet ne marche plus sur mon PC fixe. Mon téléphone capte le WiFi mais pas l'ordinateur.",
+            "Ma connexion internet ne fonctionne plus. Le câble Ethernet est branché mais Windows dit « Câble réseau débranché »."
+        ],
+        diag:{
+            visual:"Pas de lumière verte sur le port Ethernet. La LED est éteinte.",
+            sound:"Aucun bruit suspect.",
+            temperature:"Tout est normal côté températures.",
+            multimeter:"Alimentation OK. Le port réseau ne reçoit aucun signal.",
+            bios:"Le BIOS liste « Network Controller: Not Found ». La carte réseau a disparu."
+        }
+    },
 
+    // =======================================
     // ===== MOYEN (2) =====
+    // =======================================
     {
         comp:'ram', difficulty:2,
         symptoms:[
@@ -170,8 +258,136 @@ const FAULTS = [
             bios:"En branchant l'écran sur la carte mère, le BIOS s'affiche. Le GPU n'est pas détecté en PCIe."
         }
     },
+    {
+        comp:'ram', difficulty:2,
+        symptoms:[
+            "Mon PC plante avec un écran bleu « MEMORY_MANAGEMENT » toutes les heures environ.",
+            "Windows crash régulièrement avec des erreurs mémoire. Ça arrive surtout quand j'ouvre beaucoup d'onglets."
+        ],
+        diag:{
+            visual:"Pas de dommage visible. Les barrettes de RAM sont bien enfoncées dans les slots.",
+            sound:"Aucun bruit anormal. Les ventilateurs tournent normalement.",
+            temperature:"Températures normales partout. Pas de surchauffe.",
+            multimeter:"Alimentation OK. Tensions stables sur tous les rails.",
+            bios:"Le test mémoire du BIOS échoue sur le slot B1. « Memory Error in DIMM_B1 »."
+        }
+    },
+    {
+        comp:'cable', difficulty:2,
+        symptoms:[
+            "Mon PC s'allume mais le disque dur n'est plus détecté. Pourtant il marchait hier.",
+            "Windows se lance mais ne voit plus mon deuxième disque dur avec toutes mes photos dessus."
+        ],
+        diag:{
+            visual:"Le disque dur est bien présent physiquement. Le câble SATA semble un peu desserré.",
+            sound:"On n'entend pas le disque tourner, pourtant l'alimentation est branchée.",
+            temperature:"Toutes les températures sont normales.",
+            multimeter:"Le câble d'alimentation SATA du disque dur ne fournit pas de courant. Connecteur abîmé.",
+            bios:"Le BIOS détecte le port SATA mais pas de disque connecté dessus."
+        }
+    },
+    {
+        comp:'mobo', difficulty:2,
+        symptoms:[
+            "Mes ports USB à l'arrière ne marchent plus. Certains fonctionnent, d'autres sont complètement morts.",
+            "Mon clavier marche sur un port USB mais pas sur les autres. Et ma souris ne marche nulle part."
+        ],
+        diag:{
+            visual:"En regardant de près la carte mère, on voit un petit composant brûlé près des ports USB arrière.",
+            sound:"Pas de bruit anormal. Le PC tourne normalement.",
+            temperature:"Températures normales. Le PC fonctionne bien à part les ports USB.",
+            multimeter:"Alimentation OK. Mais certains ports USB arrière ne fournissent pas les 5V attendus.",
+            bios:"Le BIOS indique que le contrôleur USB 3.0 intégré n'est pas détecté. Problème carte mère."
+        }
+    },
+    {
+        comp:'psu', difficulty:2,
+        symptoms:[
+            "Mon PC s'allume puis s'éteint au bout de 30 secondes. Ensuite il se rallume tout seul, puis s'éteint encore.",
+            "Mon ordinateur fait un cycle allumage/extinction sans fin. Il n'arrive jamais à démarrer complètement."
+        ],
+        diag:{
+            visual:"Les LED s'allument brièvement puis s'éteignent. Le cycle recommence toutes les 30 secondes.",
+            sound:"Les ventilateurs démarrent puis s'arrêtent. Pas de bip BIOS.",
+            temperature:"Pas le temps de mesurer, le PC se coupe trop vite.",
+            multimeter:"⚠️ L'alimentation fournit du courant mais la tension 12V oscille entre 10V et 13V. Instable.",
+            bios:"Le BIOS n'a pas le temps de se lancer, le PC se coupe avant."
+        }
+    },
+    {
+        comp:'fan', difficulty:2,
+        symptoms:[
+            "Mon PC tourne mais il est devenu incroyablement bruyant. On dirait un avion qui décolle.",
+            "Les ventilateurs de mon PC sont à fond en permanence. Même quand je ne fais rien, c'est du 100%."
+        ],
+        diag:{
+            visual:"Le ventilateur CPU a des pales cassées. Il tourne de travers et vibre.",
+            sound:"🔊 Bruit très fort, vibrations. Le ventilateur semble déséquilibré.",
+            temperature:"🌡️ CPU à 82°C. Le ventilateur défaillant n'arrive plus à refroidir correctement.",
+            multimeter:"Alimentation OK. Le connecteur du ventilateur fournit bien du courant.",
+            bios:"Le BIOS affiche « CPU Fan Speed: Low RPM Warning ». Vitesse anormalement basse."
+        }
+    },
+    {
+        comp:'gpu', difficulty:2,
+        symptoms:[
+            "Mon écran scintille de manière aléatoire. Parfois il devient tout noir une seconde puis revient.",
+            "L'image clignote et parfois l'écran devient tout noir pendant 2-3 secondes avant de revenir."
+        ],
+        diag:{
+            visual:"Le câble vidéo est bien branché. Mais la carte graphique semble légèrement sortie de son slot PCIe.",
+            sound:"Aucun bruit suspect.",
+            temperature:"🌡️ GPU à 85°C, un peu élevé pour du bureau.",
+            multimeter:"Alimentation OK. Le connecteur PCIe 6+2 pin fournit bien le courant.",
+            bios:"Le BIOS détecte la carte graphique de manière intermittente. Connexion instable."
+        }
+    },
+    {
+        comp:'hdd', difficulty:2,
+        symptoms:[
+            "Mon PC fait un bruit de « clic-clic » bizarre et les fichiers mettent une éternité à s'ouvrir.",
+            "Certains de mes fichiers sont corrompus. Des photos ne s'ouvrent plus et des documents sont illisibles."
+        ],
+        diag:{
+            visual:"Le disque dur est en place. Rien de visuellement anormal.",
+            sound:"🔊 Cliquetis rythmiques du disque dur. Bruit de tête de lecture qui galère.",
+            temperature:"Le disque dur est à 52°C, un peu chaud pour un HDD.",
+            multimeter:"Alimentation OK. Le câble SATA est bien connecté.",
+            bios:"Le BIOS détecte le disque. Erreurs SMART : « Current Pending Sector Count: CRITICAL »."
+        }
+    },
+    {
+        comp:'thermal', difficulty:2,
+        symptoms:[
+            "Mon PC lag dans les jeux alors qu'avant ça marchait bien. La carte graphique est pourtant bonne.",
+            "Les performances de mon PC ont chuté. Les FPS dans les jeux ont été divisés par 3."
+        ],
+        diag:{
+            visual:"Pas de poussière visible. Le ventilateur tourne. Le PC a 2 ans.",
+            sound:"Les ventilateurs tournent à fond dès qu'on lance un jeu.",
+            temperature:"🌡️ CPU à 95°C en jeu ! Throttling thermique activé → le CPU bride ses performances.",
+            multimeter:"Alimentation OK. Pas de problème électrique.",
+            bios:"Le BIOS affiche « CPU Temperature: 90°C ». La pâte thermique semble avoir séché."
+        }
+    },
+    {
+        comp:'nic', difficulty:2,
+        symptoms:[
+            "Mon internet coupe toutes les 5 minutes ! La connexion se perd puis revient. C'est insupportable.",
+            "Ma connexion réseau est super instable. Ça marche 2 minutes puis ça se déconnecte."
+        ],
+        diag:{
+            visual:"Le câble Ethernet est bien branché. La LED du port clignote de manière erratique.",
+            sound:"Aucun bruit anormal.",
+            temperature:"Températures normales.",
+            multimeter:"Alimentation OK. La tension sur le port Ethernet est instable.",
+            bios:"Le BIOS détecte la carte réseau mais elle se déconnecte/reconnecte en boucle dans les logs."
+        }
+    },
 
+    // =======================================
     // ===== DIFFICILE (3) =====
+    // =======================================
     {
         comp:'mobo', difficulty:3,
         symptoms:[
@@ -240,6 +456,202 @@ const FAULTS = [
             temperature:"Impossible de mesurer, le PC ne reste pas allumé assez longtemps.",
             multimeter:"L'alimentation testée seule fournit les bonnes tensions. Le problème n'est pas le PSU.",
             bios:"Le PC se coupe avant même que l'écran ne s'allume."
+        }
+    },
+    {
+        comp:'cpu', difficulty:3,
+        symptoms:[
+            "Mon PC calcule super lentement. Les rendus 3D qui prenaient 10 minutes prennent maintenant 1 heure !",
+            "Les performances de mon PC se sont effondrées. Tout est lent, les benchmarks sont catastrophiques."
+        ],
+        diag:{
+            visual:"Tout semble normal visuellement. Pas de composant endommagé visible.",
+            sound:"Le ventilateur tourne à fond même pour des tâches simples.",
+            temperature:"🌡️ CPU à 65°C au repos, monte à 100°C dès qu'on fait quoi que ce soit.",
+            multimeter:"Alimentation OK. Tensions parfaitement stables.",
+            bios:"Le BIOS indique le CPU à une fréquence de 800MHz au lieu de 3.6GHz. Le CPU est en mode dégradé, erreurs internes détectées."
+        }
+    },
+    {
+        comp:'mobo', difficulty:3,
+        symptoms:[
+            "Mon PC n'affiche rien mais émet 5 bips longs au démarrage. Ça ne l'a jamais fait avant.",
+            "Quand j'allume le PC, j'entends une série de bips longs et rien ne s'affiche. Les ventilateurs tournent."
+        ],
+        diag:{
+            visual:"LED orange fixe sur la carte mère. Le voyant CPU_LED est allumé en rouge.",
+            sound:"🔊 5 bips longs au démarrage. Code erreur = erreur processeur sur la carte mère.",
+            temperature:"Le PC ne démarre pas assez pour mesurer.",
+            multimeter:"Alimentation OK. Le socket CPU reçoit bien du courant. Le VRM chauffe anormalement.",
+            bios:"Le POST échoue dès l'initialisation. Le code debug de la carte mère affiche « 00 » (erreur carte mère)."
+        }
+    },
+    {
+        comp:'gpu', difficulty:3,
+        symptoms:[
+            "Mon PC fonctionne bien pour le bureau mais dès que je lance un jeu 3D, l'écran devient tout vert et le PC plante.",
+            "Les jeux font apparaître des textures manquantes, des triangles roses/verts, puis freeze total."
+        ],
+        diag:{
+            visual:"Pas de problème visible au repos. Les artefacts n'apparaissent qu'en charge graphique.",
+            sound:"Les ventilateurs GPU montent très haut, puis le PC freeze.",
+            temperature:"🌡️ GPU à 55°C au repos (OK), mais bondit à 105°C en jeu ! Le refroidissement du GPU est défaillant.",
+            multimeter:"Alimentation OK. Le rail 12V est stable même en charge.",
+            bios:"Le BIOS fonctionne normalement. En revanche le driver GPU crash avec « TDR Failure » sous Windows."
+        }
+    },
+    {
+        comp:'ram', difficulty:3,
+        symptoms:[
+            "Mes applications se ferment toutes seules sans message d'erreur. Chrome, Word, tout crash de manière aléatoire.",
+            "Mon PC a des comportements bizarres. Des programmes crashent, des fichiers se corrompent, c'est le chaos."
+        ],
+        diag:{
+            visual:"Tout est visuellement en ordre. Aucun composant endommagé visible.",
+            sound:"Aucun bruit suspect. Le PC est silencieux.",
+            temperature:"Températures parfaitement normales. Pas de surchauffe.",
+            multimeter:"Alimentation stable. Rien d'anormal côté électrique.",
+            bios:"Le test mémoire avancé du BIOS révèle des erreurs multiples sur les bits 12-15. « Possible DIMM failure on Channel A »."
+        }
+    },
+    {
+        comp:'psu', difficulty:3,
+        symptoms:[
+            "Mon PC fait des petits « tic-tic » dans le boîtier et parfois l'écran clignote. C'est aléatoire.",
+            "Mon PC a des micro-freezes de quelques millisecondes. L'image saccade et parfois le son grésille."
+        ],
+        diag:{
+            visual:"Rien de visible au premier abord. Les composants semblent en bon état.",
+            sound:"🔊 De petits claquements secs, irréguliers, venant du bas du boîtier (zone alimentation).",
+            temperature:"Températures normales partout. Pas de problème thermique.",
+            multimeter:"⚠️ Le rail 5V fluctue entre 4.6V et 5.3V. Le rail 3.3V oscille aussi. Alimentation instable !",
+            bios:"Le BIOS fonctionne mais les logs système montrent de multiples « Power Supply Voltage Unstable »."
+        }
+    },
+    {
+        comp:'cable', difficulty:3,
+        symptoms:[
+            "Mon PC a un comportement vraiment étrange : il démarre, mais parfois pas de son, parfois pas de vidéo, parfois les deux.",
+            "Les symptômes changent à chaque redémarrage ! Parfois écran noir, parfois son coupé, parfois tout marche."
+        ],
+        diag:{
+            visual:"En regardant attentivement, le câble d'alimentation principal 24-pin est légèrement desserré sur la carte mère.",
+            sound:"Les sons sont incohérents : parfois un bip, parfois rien, parfois le son Windows.",
+            temperature:"Quand le PC arrive à démarrer, les températures sont normales.",
+            multimeter:"⚠️ Tensions correctes à la source, mais intermittentes au connecteur 24-pin. Contact instable.",
+            bios:"Le BIOS se charge parfois mais affiche des erreurs différentes à chaque boot."
+        }
+    },
+    {
+        comp:'hdd', difficulty:3,
+        symptoms:[
+            "Mon PC freeze complètement pendant 30 secondes, puis reprend. Ça arrive 5-6 fois par jour.",
+            "Windows se bloque totalement de manière aléatoire. La souris ne bouge plus, puis d'un coup ça repart."
+        ],
+        diag:{
+            visual:"Pas de dommage visible. Le SSD/HDD est bien branché.",
+            sound:"Pendant les freezes, on entend des clics rapides du disque dur, comme s'il cherchait quelque chose.",
+            temperature:"Le disque dur est à 48°C, dans les normes.",
+            multimeter:"Alimentation OK. Le câble SATA est bien connecté.",
+            bios:"Le BIOS détecte le disque mais avec des erreurs SMART critiques : « Uncorrectable Sector Count: 847 ». Disque en fin de vie."
+        }
+    },
+    {
+        comp:'fan', difficulty:3,
+        symptoms:[
+            "Mon PC s'éteint uniquement pendant les jeux vidéo, après environ 20 minutes de jeu. Pas d'écran bleu.",
+            "Quand je joue ou que je fais du montage vidéo, le PC finit toujours par se couper brutalement."
+        ],
+        diag:{
+            visual:"Le ventilateur CPU tourne mais lentement. Les pales sont propres mais le moteur semble faible.",
+            sound:"Le ventilateur fait un bruit faible, pas assez puissant pour le refroidissement en charge.",
+            temperature:"🌡️ CPU à 55°C au repos (OK) mais monte à 100°C en jeu → protection thermique → arrêt.",
+            multimeter:"Alimentation OK. Le connecteur ventilateur fournit bien du courant.",
+            bios:"Le BIOS affiche « CPU Fan Speed: 600 RPM ». Normal = 1500-2000 RPM. Le ventilateur tourne trop lentement."
+        }
+    },
+    {
+        comp:'cpu', difficulty:3,
+        symptoms:[
+            "Mon PC démarre mais Windows crash immédiatement avec un écran bleu « KERNEL_DATA_INPAGE_ERROR ». Même en mode sans échec.",
+            "Impossible de garder le PC allumé plus de 2 minutes. Écran bleu systématique, peu importe ce que je fais."
+        ],
+        diag:{
+            visual:"Pas de dommage visible. La carte mère et le CPU semblent en bon état.",
+            sound:"Un bip normal au démarrage, puis le PC tourne quelques minutes avant le crash.",
+            temperature:"CPU à 70°C, légèrement élevé mais pas critique.",
+            multimeter:"Alimentation OK. Tensions parfaitement stables.",
+            bios:"Le BIOS signale « CPU Microcode Update Failed » et « Internal Parity Error ». Le processeur a des défauts internes."
+        }
+    },
+    {
+        comp:'mobo', difficulty:3,
+        symptoms:[
+            "Mon PC ne reconnaît plus qu'un seul slot RAM sur 4. J'ai testé avec d'autres barrettes, même résultat.",
+            "J'ai acheté de la RAM neuve mais mon PC ne la détecte pas dans 3 slots sur 4."
+        ],
+        diag:{
+            visual:"En inspectant les slots RAM, 3 d'entre eux semblent avoir des pins tordus ou noircis.",
+            sound:"Le PC émet un bip normal et démarre correctement avec 1 seule barrette.",
+            temperature:"Températures normales.",
+            multimeter:"Alimentation OK. Les 3 slots défaillants ne reçoivent pas la tension 1.2V correcte.",
+            bios:"Le BIOS ne détecte de la RAM que dans le slot A1. Les slots A2, B1, B2 sont marqués « Empty ». Problème carte mère."
+        }
+    },
+    {
+        comp:'nic', difficulty:3,
+        symptoms:[
+            "Ma vitesse internet est tombée à 10 Mbps alors que j'ai la fibre. Sur d'autres appareils ça marche bien.",
+            "Mon débit internet est devenu minable. Les téléchargements sont ultra lents et le ping est horrible."
+        ],
+        diag:{
+            visual:"Le câble Ethernet est bien branché. La LED du port réseau est orange au lieu de verte.",
+            sound:"Aucun bruit suspect.",
+            temperature:"Températures normales partout.",
+            multimeter:"Alimentation OK. Le port réseau est alimenté mais la négociation de vitesse échoue.",
+            bios:"Le BIOS affiche « Network Controller: 10 Mbps » au lieu de « 1000 Mbps ». La carte réseau est dégradée, elle ne négocie plus en Gigabit."
+        }
+    },
+    {
+        comp:'thermal', difficulty:3,
+        symptoms:[
+            "Mon PC a des performances qui changent tout le temps. Parfois rapide, parfois ultra lent, sans raison.",
+            "Les performances de mon ordinateur font du yo-yo. Un coup c'est fluide, un coup ça rame à mort."
+        ],
+        diag:{
+            visual:"Pas de poussière. Ventilateur OK. Le PC a 4 ans, la pâte thermique n'a jamais été changée.",
+            sound:"Le ventilateur accélère et ralentit en boucle, comme s'il hésitait.",
+            temperature:"🌡️ CPU oscille entre 50°C et 98°C de manière cyclique. La pâte thermique ne fait plus de contact uniforme.",
+            multimeter:"Alimentation OK. Pas de problème électrique.",
+            bios:"Le BIOS montre le CPU qui alterne entre sa fréquence max et 800MHz (throttling). Températures instables."
+        }
+    },
+    {
+        comp:'cable', difficulty:3,
+        symptoms:[
+            "Mon PC s'allume mais l'écran reste noir. J'ai changé l'écran, changé la carte graphique, rien ne marche !",
+            "Écran noir au démarrage. J'ai tout testé : autre écran, autre GPU, mais rien. Le PC tourne pourtant."
+        ],
+        diag:{
+            visual:"Le PC démarre, LED vertes. En regardant très attentivement, le câble d'alimentation 8-pin du CPU est mal enfoncé.",
+            sound:"Les ventilateurs tournent mais pas de bip BIOS. Le signal vidéo ne part jamais.",
+            temperature:"Le CPU reste froid, comme s'il ne travaillait pas.",
+            multimeter:"⚠️ Le connecteur EPS 8-pin du CPU ne fournit que 2V au lieu de 12V. Mauvais contact.",
+            bios:"Le BIOS ne démarre pas. Sans alimentation CPU correcte, la carte mère refuse le POST."
+        }
+    },
+    {
+        comp:'psu', difficulty:3,
+        symptoms:[
+            "Mon PC sent une odeur de brûlé ! Je l'ai éteint tout de suite. Maintenant j'ai peur de le rallumer.",
+            "Une odeur de plastique brûlé sort de mon PC. Il marchait encore mais j'ai préféré le débrancher."
+        ],
+        diag:{
+            visual:"⚠️ Traces de brûlure visibles sur le boîtier de l'alimentation. Un composant a cramé à l'intérieur.",
+            sound:"Si on essaie de l'allumer : un grésillement inquiétant vient de l'alimentation.",
+            temperature:"L'alimentation est chaude au toucher, bien plus que la normale.",
+            multimeter:"⚠️ Le rail 12V sort à 14V ! Surtension dangereuse. L'alimentation est défectueuse et pourrait endommager les autres composants.",
+            bios:"NE PAS ALLUMER ! L'alimentation défectueuse pourrait endommager la carte mère et le CPU."
         }
     },
 ];
