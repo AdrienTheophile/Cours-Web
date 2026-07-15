@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Créer son Mod Minecraft avec Forge</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .steps {
+            background-color: #ede7f6;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px auto;
+            max-width: 900px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            text-align: left;
+        }
+
+        .steps h2 {
+            color: #4a148c;
+            text-align: center;
+        }
+
+        .steps ol {
+            padding-left: 20px;
+            line-height: 2;
+            font-size: 1.05em;
+        }
+
+        .steps ol li {
+            margin-bottom: 8px;
+        }
+
+        .steps ol li strong {
+            color: #4a148c;
+        }
+
+        .code-section {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px auto;
+            max-width: 900px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            text-align: left;
+        }
+
+        .code-section h2 {
+            color: #6a1b9a;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .code-section h3 {
+            color: #4a148c;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .code-section p {
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        /* ===== CODE NON-COPIABLE ===== */
+        .code-block {
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.82em;
+            padding: 16px 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.6;
+            margin: 10px 0 20px 0;
+            border-left: 4px solid #7e57c2;
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.3);
+
+            /* === Anti copier-coller === */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: auto;
+        }
+
+        .code-block .kw   { color: #cba6f7; }  /* keywords */
+        .code-block .str  { color: #a6e3a1; }  /* strings */
+        .code-block .cm   { color: #6c7086; }  /* comments */
+        .code-block .num  { color: #fab387; }  /* numbers */
+        .code-block .ann  { color: #f9e2af; }  /* annotations */
+        .code-block .type { color: #89b4fa; }  /* types/classes */
+        .code-block .fn   { color: #f38ba8; }  /* function names */
+
+        .no-copy-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef5350, #c62828);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: bold;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .file-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #7e57c2, #4a148c);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: bold;
+            font-family: 'Consolas', monospace;
+        }
+
+        .tree-section {
+            background: linear-gradient(135deg, #e8eaf6, #c5cae9);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px auto;
+            max-width: 900px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        .tree-section h2 {
+            color: #283593;
+        }
+
+        .tree-section img {
+            max-width: 380px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            margin-top: 15px;
+            border: 2px solid #7986cb;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px auto;
+            max-width: 900px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            text-align: left;
+        }
+
+        .info-box h2 {
+            color: #e65100;
+            text-align: center;
+        }
+
+        .info-box ul {
+            padding-left: 20px;
+            line-height: 2;
+            font-size: 1.02em;
+        }
+
+        .info-box ul li strong {
+            color: #bf360c;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #7e57c2, #4a148c);
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.05em;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 12px rgba(74, 20, 140, 0.3);
+        }
+
+        .back-link:hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 18px rgba(74, 20, 140, 0.45);
+            color: white;
+            text-decoration: none;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #43a047;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            font-size: 0.92em;
+            color: #2e7d32;
+        }
+
+        .warn-box {
+            background: #fff3e0;
+            border-left: 4px solid #e65100;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            font-size: 0.92em;
+            color: #bf360c;
+        }
+
+        @media (max-width: 600px) {
+            .code-block {
+                font-size: 0.7em;
+                padding: 10px 12px;
+            }
+
+            .steps, .code-section, .tree-section, .info-box {
+                margin: 15px;
+                padding: 15px;
+            }
+
+            .tree-section img {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🔧 Créer son Mod Minecraft avec Forge</h1>
+        <p>Ajoute des items, des armes et des armures dans Minecraft en Java !</p>
+    </header>
+
+    <nav>
+        <a href="index.html">🏠 Accueil</a>
+        <a href="debutant.html">✨ Débutant</a>
+        <a href="intermediaire.html">🧩 Intermédiaire</a>
+        <a href="confirme.html">🚀 Confirmé</a>
+        <a href="langages.html">📖 Langages</a>
+        <a href="roblox.html">🎮 Roblox</a>
+        <a href="minecraft.html">⛏️ Minecraft</a>
+    </nav>
+
+    <main>
+
+        <!-- INTRO -->
+        <section class="info-box">
+            <h2>🎯 Objectif du cours</h2>
+            <p>Dans ce tuto, tu vas apprendre à créer un <strong>mod Minecraft Forge</strong> qui ajoute :</p>
+            <ul>
+                <li><strong>🧶 Un nouvel item</strong> — Le Coton (ingrédient)</li>
+                <li><strong>⚔️ Des armes personnalisées</strong> — Un sabre laser bleu et un rouge !</li>
+                <li><strong>🛡️ Une armure complète</strong> — La tenue de Jedi (casque, plastron, jambières, bottes)</li>
+            </ul>
+            <div class="warn-box">
+                ⚠️ <strong>Attention :</strong> Les codes ci-dessous ne sont pas copiables ! Tu dois les <strong>recopier à la main</strong> pour apprendre et comprendre chaque ligne.
+            </div>
+        </section>
+
+        <!-- ETAPES -->
+        <section class="steps">
+            <h2>📋 Les étapes pour créer ton mod</h2>
+            <ol>
+                <li><strong>Installe le JDK 17+</strong> — Tu as besoin de Java Development Kit pour compiler le mod.</li>
+                <li><strong>Télécharge le MDK Forge pour 1.21</strong> — C'est le kit de développement de mods sur <a href="https://files.minecraftforge.net/" target="_blank">le site de Forge</a>.</li>
+                <li><strong>Extrais le MDK</strong> et ouvre le projet dans <strong>IntelliJ IDEA</strong> (Community Edition gratuit).</li>
+                <li><strong>Attends que Gradle se synchronise</strong> — Ça peut prendre quelques minutes la première fois.</li>
+                <li><strong>Crée les fichiers Java</strong> — Recopie les codes ci-dessous dans les bons fichiers.</li>
+                <li><strong>Crée les fichiers JSON</strong> — Pour les modèles d'items et les traductions.</li>
+                <li><strong>Ajoute les textures</strong> — Dessine tes textures 16×16 pixels avec Paint.NET.</li>
+                <li><strong>Lance le jeu avec le bouton ▶️</strong> dans IntelliJ pour tester ton mod !</li>
+            </ol>
+        </section>
+
+        <!-- ARBORESCENCE -->
+        <section class="tree-section">
+            <h2>📁 Arborescence du projet</h2>
+            <p>Voici comment les fichiers doivent être organisés dans ton projet Forge :</p>
+            <img src="minecraft/arborescence-mod.png" alt="Arborescence du projet mod Minecraft dans IntelliJ IDEA" />
+            <div class="tip-box" style="text-align:left; margin-top:15px;">
+                💡 <strong>Astuce :</strong> Respecte bien cette structure de dossiers ! Chaque fichier doit être au bon endroit sinon le mod ne fonctionnera pas.
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!--              CODE A RECOPIER                 -->
+        <!-- ============================================ -->
+
+        <section class="code-section">
+            <h2>💻 Fichiers Java à recopier</h2>
+            <p style="text-align:center; color: #c62828; font-weight:bold;">🚫 Copier-coller désactivé — Recopie chaque fichier à la main !</p>
+
+            <!-- ===== TestMod.java ===== -->
+            <h3>📄 <span class="file-badge">TestMod.java</span> <span class="no-copy-badge">🚫 À recopier</span></h3>
+            <p>📍 Chemin : <code>src/main/java/com/example/examplemod/TestMod.java</code></p>
+            <p>C'est le fichier principal du mod. Il enregistre tous tes items et les ajoute dans les onglets créatifs.</p>
+            <div class="code-block" id="code-testmod"><span class="kw">package</span> com.example.examplemod;
+
+<span class="kw">import</span> com.example.examplemod.item.<span class="type">ModItems</span>;
+<span class="kw">import</span> com.mojang.logging.<span class="type">LogUtils</span>;
+<span class="kw">import</span> net.minecraft.world.item.<span class="type">CreativeModeTabs</span>;
+<span class="kw">import</span> net.minecraftforge.api.distmarker.<span class="type">Dist</span>;
+<span class="kw">import</span> net.minecraftforge.common.<span class="type">MinecraftForge</span>;
+<span class="kw">import</span> net.minecraftforge.event.<span class="type">BuildCreativeModeTabContentsEvent</span>;
+<span class="kw">import</span> net.minecraftforge.event.server.<span class="type">ServerStartingEvent</span>;
+<span class="kw">import</span> net.minecraftforge.eventbus.api.<span class="type">IEventBus</span>;
+<span class="kw">import</span> net.minecraftforge.eventbus.api.<span class="type">SubscribeEvent</span>;
+<span class="kw">import</span> net.minecraftforge.fml.<span class="type">ModLoadingContext</span>;
+<span class="kw">import</span> net.minecraftforge.fml.common.<span class="type">Mod</span>;
+<span class="kw">import</span> net.minecraftforge.fml.config.<span class="type">ModConfig</span>;
+<span class="kw">import</span> net.minecraftforge.fml.event.lifecycle.<span class="type">FMLClientSetupEvent</span>;
+<span class="kw">import</span> net.minecraftforge.fml.event.lifecycle.<span class="type">FMLCommonSetupEvent</span>;
+<span class="kw">import</span> net.minecraftforge.fml.javafmlmod.<span class="type">FMLJavaModLoadingContext</span>;
+<span class="kw">import</span> org.slf4j.<span class="type">Logger</span>;
+
+<span class="cm">// The value here should match an entry in the META-INF/mods.toml file</span>
+<span class="ann">@Mod</span>(<span class="type">TestMod</span>.MOD_ID)
+<span class="kw">public class</span> <span class="type">TestMod</span> {
+    <span class="cm">// Define mod id in a common place for everything to reference</span>
+    <span class="kw">public static final</span> <span class="type">String</span> MOD_ID = <span class="str">"testmod"</span>;
+    <span class="kw">public static final</span> <span class="type">Logger</span> LOGGER = <span class="type">LogUtils</span>.<span class="fn">getLogger</span>();
+
+    <span class="kw">public</span> <span class="fn">TestMod</span>() {
+        <span class="type">IEventBus</span> modEventBus = <span class="type">FMLJavaModLoadingContext</span>.<span class="fn">get</span>().<span class="fn">getModEventBus</span>();
+        modEventBus.<span class="fn">addListener</span>(<span class="kw">this</span>::commonSetup);
+
+        <span class="cm">// Register ourselves for server and other game events we are interested in</span>
+        <span class="type">MinecraftForge</span>.EVENT_BUS.<span class="fn">register</span>(<span class="kw">this</span>);
+
+        <span class="type">ModItems</span>.<span class="fn">register</span>(modEventBus);
+
+        <span class="cm">// Register the item to a creative tab</span>
+        modEventBus.<span class="fn">addListener</span>(<span class="kw">this</span>::addCreative);
+
+        <span class="cm">// Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us</span>
+        <span class="type">ModLoadingContext</span>.<span class="fn">get</span>().<span class="fn">registerConfig</span>(<span class="type">ModConfig</span>.Type.COMMON, <span class="type">Config</span>.SPEC);
+    }
+
+    <span class="kw">private void</span> <span class="fn">commonSetup</span>(<span class="kw">final</span> <span class="type">FMLCommonSetupEvent</span> event) {
+
+    }
+
+    <span class="cm">// Add the example block item to the building blocks tab</span>
+    <span class="kw">private void</span> <span class="fn">addCreative</span>(<span class="type">BuildCreativeModeTabContentsEvent</span> event) {
+        <span class="kw">if</span>(event.<span class="fn">getTabKey</span>() == <span class="type">CreativeModeTabs</span>.COMBAT) {
+            event.<span class="fn">accept</span>(<span class="type">ModItems</span>.LIGHTSABER_BLUE);
+            event.<span class="fn">accept</span>(<span class="type">ModItems</span>.LIGHTSABER_RED);
+        }
+
+        <span class="kw">if</span>(event.<span class="fn">getTabKey</span>() == <span class="type">CreativeModeTabs</span>.INGREDIENTS) {
+            event.<span class="fn">accept</span>(<span class="type">ModItems</span>.COTON);
+        }
+
+        <span class="kw">if</span>(event.<span class="fn">getTabKey</span>() == <span class="type">CreativeModeTabs</span>.COMBAT) {
+            event.<span class="fn">accept</span>(<span class="type">ModItems</span>.JEDI_HELMET);
+            event.<span class="fn">accept</span>(<span class="type">ModItems</span>.JEDI_CHESTPLATE);
+            event.<span class="fn">accept</span>(<span class="type">ModItems</span>.JEDI_LEGGINGS);
+            event.<span class="fn">accept</span>(<span class="type">ModItems</span>.JEDI_BOOTS);
+        }
+    }
+
+    <span class="cm">// You can use SubscribeEvent and let the Event Bus discover methods to call</span>
+    <span class="ann">@SubscribeEvent</span>
+    <span class="kw">public void</span> <span class="fn">onServerStarting</span>(<span class="type">ServerStartingEvent</span> event) {
+
+    }
+
+    <span class="cm">// You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent</span>
+    <span class="ann">@Mod.EventBusSubscriber</span>(modid = MOD_ID, bus = <span class="type">Mod</span>.EventBusSubscriber.Bus.MOD, value = <span class="type">Dist</span>.CLIENT)
+    <span class="kw">public static class</span> <span class="type">ClientModEvents</span>
+    {
+        <span class="ann">@SubscribeEvent</span>
+        <span class="kw">public static void</span> <span class="fn">onClientSetup</span>(<span class="type">FMLClientSetupEvent</span> event) {
+
+        }
+    }
+}</div>
+
+            <!-- ===== ModItems.java ===== -->
+            <h3>📄 <span class="file-badge">ModItems.java</span> <span class="no-copy-badge">🚫 À recopier</span></h3>
+            <p>📍 Chemin : <code>src/main/java/com/example/examplemod/item/ModItems.java</code></p>
+            <p>Ce fichier enregistre tous les items du mod : le coton, les sabres laser et l'armure Jedi.</p>
+            <div class="code-block" id="code-moditems"><span class="kw">package</span> com.example.examplemod.item;
+
+<span class="kw">import</span> com.example.examplemod.<span class="type">TestMod</span>;
+<span class="kw">import</span> net.minecraft.world.item.<span class="type">ArmorItem</span>;
+<span class="kw">import</span> net.minecraft.world.item.<span class="type">Item</span>;
+<span class="kw">import</span> net.minecraft.world.item.<span class="type">SwordItem</span>;
+<span class="kw">import</span> net.minecraftforge.eventbus.api.<span class="type">IEventBus</span>;
+<span class="kw">import</span> net.minecraftforge.registries.<span class="type">DeferredRegister</span>;
+<span class="kw">import</span> net.minecraftforge.registries.<span class="type">ForgeRegistries</span>;
+<span class="kw">import</span> net.minecraftforge.registries.<span class="type">RegistryObject</span>;
+
+<span class="kw">public class</span> <span class="type">ModItems</span> {
+
+    <span class="kw">public static final</span> <span class="type">DeferredRegister</span>&lt;<span class="type">Item</span>&gt; ITEMS = <span class="type">DeferredRegister</span>.<span class="fn">create</span>(<span class="type">ForgeRegistries</span>.ITEMS, <span class="type">TestMod</span>.MOD_ID);
+
+    <span class="cm">// ITEMS</span>
+
+    <span class="kw">public static final</span> <span class="type">RegistryObject</span>&lt;<span class="type">Item</span>&gt; COTON = ITEMS.<span class="fn">register</span>(<span class="str">"coton"</span>,
+            () -&gt; <span class="kw">new</span> <span class="type">Item</span>(<span class="kw">new</span> <span class="type">Item</span>.<span class="type">Properties</span>()));
+
+    <span class="cm">// ARMES</span>
+
+    <span class="kw">public static final</span> <span class="type">RegistryObject</span>&lt;<span class="type">Item</span>&gt; LIGHTSABER_BLUE =
+            ITEMS.<span class="fn">register</span>(<span class="str">"lightsaber_blue"</span>,
+                    () -&gt; <span class="kw">new</span> <span class="type">SwordItem</span>(<span class="type">ModToolTiers</span>.LIGHT, <span class="kw">new</span> <span class="type">Item</span>.<span class="type">Properties</span>()
+                            .<span class="fn">attributes</span>( <span class="type">SwordItem</span>.<span class="fn">createAttributes</span>( <span class="type">ModToolTiers</span>.LIGHT, <span class="num">5</span>, <span class="num">-2f</span>))));
+
+    <span class="kw">public static final</span> <span class="type">RegistryObject</span>&lt;<span class="type">Item</span>&gt; LIGHTSABER_RED =
+            ITEMS.<span class="fn">register</span>(<span class="str">"lightsaber_red"</span>,
+                    () -&gt; <span class="kw">new</span> <span class="type">SwordItem</span>(<span class="type">ModToolTiers</span>.LIGHT, <span class="kw">new</span> <span class="type">Item</span>.<span class="type">Properties</span>()
+                            .<span class="fn">attributes</span>( <span class="type">SwordItem</span>.<span class="fn">createAttributes</span>( <span class="type">ModToolTiers</span>.LIGHT, <span class="num">17</span>, <span class="num">-2f</span>))));
+
+    <span class="cm">// ARMORS</span>
+
+    <span class="kw">public static final</span> <span class="type">RegistryObject</span>&lt;<span class="type">Item</span>&gt; JEDI_HELMET = ITEMS.<span class="fn">register</span>(<span class="str">"jedi_helmet"</span>,
+            () -&gt; <span class="kw">new</span> <span class="type">ArmorItem</span>(<span class="type">ModArmorMaterials</span>.JEDI_COAT, <span class="type">ArmorItem</span>.Type.HELMET,
+                    <span class="kw">new</span> <span class="type">Item</span>.<span class="type">Properties</span>().<span class="fn">durability</span>(<span class="type">ArmorItem</span>.Type.HELMET.<span class="fn">getDurability</span>(<span class="num">18</span>))));
+
+    <span class="kw">public static final</span> <span class="type">RegistryObject</span>&lt;<span class="type">Item</span>&gt; JEDI_CHESTPLATE = ITEMS.<span class="fn">register</span>(<span class="str">"jedi_chestplate"</span>,
+            () -&gt; <span class="kw">new</span> <span class="type">ArmorItem</span>(<span class="type">ModArmorMaterials</span>.JEDI_COAT, <span class="type">ArmorItem</span>.Type.CHESTPLATE,
+                    <span class="kw">new</span> <span class="type">Item</span>.<span class="type">Properties</span>().<span class="fn">durability</span>(<span class="type">ArmorItem</span>.Type.CHESTPLATE.<span class="fn">getDurability</span>(<span class="num">18</span>))));
+
+    <span class="kw">public static final</span> <span class="type">RegistryObject</span>&lt;<span class="type">Item</span>&gt; JEDI_LEGGINGS = ITEMS.<span class="fn">register</span>(<span class="str">"jedi_leggings"</span>,
+            () -&gt; <span class="kw">new</span> <span class="type">ArmorItem</span>(<span class="type">ModArmorMaterials</span>.JEDI_COAT, <span class="type">ArmorItem</span>.Type.LEGGINGS,
+                    <span class="kw">new</span> <span class="type">Item</span>.<span class="type">Properties</span>().<span class="fn">durability</span>(<span class="type">ArmorItem</span>.Type.LEGGINGS.<span class="fn">getDurability</span>(<span class="num">18</span>))));
+
+    <span class="kw">public static final</span> <span class="type">RegistryObject</span>&lt;<span class="type">Item</span>&gt; JEDI_BOOTS = ITEMS.<span class="fn">register</span>(<span class="str">"jedi_boots"</span>,
+            () -&gt; <span class="kw">new</span> <span class="type">ArmorItem</span>(<span class="type">ModArmorMaterials</span>.JEDI_COAT, <span class="type">ArmorItem</span>.Type.BOOTS,
+                    <span class="kw">new</span> <span class="type">Item</span>.<span class="type">Properties</span>().<span class="fn">durability</span>(<span class="type">ArmorItem</span>.Type.BOOTS.<span class="fn">getDurability</span>(<span class="num">18</span>))));
+
+    <span class="kw">public static void</span> <span class="fn">register</span>(<span class="type">IEventBus</span> eventBus) {
+        ITEMS.<span class="fn">register</span>(eventBus);
+    }
+}</div>
+
+            <!-- ===== ModToolTiers.java ===== -->
+            <h3>📄 <span class="file-badge">ModToolTiers.java</span> <span class="no-copy-badge">🚫 À recopier</span></h3>
+            <p>📍 Chemin : <code>src/main/java/com/example/examplemod/item/ModToolTiers.java</code></p>
+            <p>Ce fichier définit le <strong>tier</strong> (niveau) de tes armes : durabilité, dégâts, vitesse de minage, etc.</p>
+            <div class="code-block" id="code-tooltiers"><span class="kw">package</span> com.example.examplemod.item;
+
+<span class="kw">import</span> net.minecraft.tags.<span class="type">BlockTags</span>;
+<span class="kw">import</span> net.minecraft.world.item.<span class="type">Tier</span>;
+<span class="kw">import</span> net.minecraft.world.item.crafting.<span class="type">Ingredient</span>;
+<span class="kw">import</span> net.minecraftforge.common.<span class="type">ForgeTier</span>;
+
+<span class="kw">public class</span> <span class="type">ModToolTiers</span> {
+
+    <span class="kw">public static final</span> <span class="type">Tier</span> LIGHT = <span class="kw">new</span> <span class="type">ForgeTier</span>(
+            <span class="num">1400</span>, <span class="cm">// durabilité</span>
+            <span class="num">1f</span>,   <span class="cm">// vitesse de minage</span>
+            <span class="num">14f</span>,  <span class="cm">// bonus de dégâts</span>
+            <span class="num">22</span>,   <span class="cm">// enchantabilité</span>
+            <span class="type">BlockTags</span>.MINEABLE_WITH_PICKAXE, <span class="cm">// tag de blocs minables</span>
+            () -&gt; <span class="type">Ingredient</span>.EMPTY,          <span class="cm">// réparation</span>
+            <span class="type">BlockTags</span>.INCORRECT_FOR_WOODEN_TOOL <span class="cm">// blocs incorrects</span>
+    );
+
+}</div>
+        </section>
+
+        <!-- ===== FICHIERS JSON ===== -->
+        <section class="code-section">
+            <h2>📦 Fichiers JSON à recopier</h2>
+
+            <!-- ===== coton.json ===== -->
+            <h3>📄 <span class="file-badge">coton.json</span> <span class="no-copy-badge">🚫 À recopier</span></h3>
+            <p>📍 Chemin : <code>src/main/resources/assets/testmod/models/item/coton.json</code></p>
+            <p>Ce fichier JSON indique à Minecraft quel modèle utiliser pour afficher l'item Coton. Tu dois aussi créer un fichier similaire pour <code>lightsaber_blue.json</code> et <code>lightsaber_red.json</code> en changeant le nom de la texture.</p>
+            <div class="code-block" id="code-coton">{
+  <span class="str">"parent"</span>: <span class="str">"minecraft:item/generated"</span>,
+  <span class="str">"textures"</span>: {
+    <span class="str">"layer0"</span>: <span class="str">"testmod:item/coton"</span>
+  }
+}</div>
+
+            <!-- ===== en_us.json ===== -->
+            <h3>📄 <span class="file-badge">en_us.json</span> <span class="no-copy-badge">🚫 À recopier</span></h3>
+            <p>📍 Chemin : <code>src/main/resources/assets/testmod/lang/en_us.json</code></p>
+            <p>Ce fichier donne les <strong>noms affichés</strong> de tes items en jeu. Sans ce fichier, tes items apparaîtront avec des noms techniques illisibles.</p>
+            <div class="code-block" id="code-lang">{
+  <span class="str">"item.testmod.coton"</span>: <span class="str">"Coton"</span>,
+  <span class="str">"item.testmod.lightsaber_blue"</span>: <span class="str">"Blue LightSaber"</span>,
+  <span class="str">"item.testmod.lightsaber_red"</span>: <span class="str">"Red LightSaber"</span>
+}</div>
+        </section>
+
+        <!-- TIPS -->
+        <section class="info-box">
+            <h2>💡 Conseils et astuces</h2>
+            <ul>
+                <li><strong>Textures :</strong> Les textures d'items doivent être des images <code>.png</code> en <strong>16×16 pixels</strong>. Place-les dans <code>assets/testmod/textures/item/</code>.</li>
+                <li><strong>Noms de fichiers :</strong> Utilise uniquement des <strong>minuscules</strong>, des <strong>underscores</strong> (_) et <strong>pas d'espaces ni d'accents</strong> dans les noms.</li>
+                <li><strong>Modèles JSON :</strong> Chaque item a besoin d'un fichier <code>.json</code> dans <code>models/item/</code> avec exactement le même nom que l'item enregistré dans le code.</li>
+                <li><strong>Tester :</strong> Lance le jeu avec le bouton ▶️ dans IntelliJ. En jeu, ouvre l'inventaire créatif et cherche dans l'onglet <strong>Combat</strong> ou <strong>Ingrédients</strong>.</li>
+                <li><strong>Erreurs :</strong> Si le jeu crash, lis le message d'erreur dans la console ! Souvent c'est un nom de fichier mal écrit ou un fichier au mauvais endroit.</li>
+            </ul>
+            <div class="tip-box">
+                💡 <strong>Pour aller plus loin :</strong> Tu peux modifier les valeurs dans <code>ModToolTiers.java</code> pour changer les dégâts, la durabilité ou la vitesse de tes armes !
+            </div>
+        </section>
+
+        <!-- RETOUR -->
+        <section style="text-align:center; background:transparent; box-shadow:none; padding:10px;">
+            <a href="minecraft.html" class="back-link">⬅️ Retour à la page Minecraft</a>
+        </section>
+
+    </main>
+
+    <!-- ===== ANTI COPIER-COLLER JS ===== -->
+    <script>
+        // Empêcher le copier-coller sur les blocs de code
+        document.querySelectorAll('.code-block').forEach(function(block) {
+            // Bloquer la copie
+            block.addEventListener('copy', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            // Bloquer le clic droit
+            block.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            // Bloquer le drag
+            block.addEventListener('dragstart', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            // Bloquer Ctrl+C / Ctrl+A dans les blocs
+            block.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && (e.key === 'c' || e.key === 'a' || e.key === 'x')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
